@@ -237,7 +237,7 @@ msgstr "שמור שינויים"
 msgid "How to Set up Google Spreadsheet to pull data from WordPress"
 msgstr "איך להגדיר למסמכי גוגל למשוך מידע מוורדפרס"
 
-#: CJ7DBCheckZendFramework.php:71
+#: CFDBCheckZendFrameworkphp:71
 msgid "Missing Zend Framework"
 msgstr "Zend Framework לא נמצא"
 

@@ -602,7 +602,7 @@ msgstr "« السابق"
 msgid "Returned entries %s to %s of %s entries in the database"
 msgstr "مقالات عدد٪ s إلى٪ s من مقالات٪ s في قاعدة البيانات"
 
-#: CJ7DBCheckZendFramework.php:72
+#: CFDBCheckZendFramework.php72
 msgid "Missing Zend Framework"
 msgstr "Missing Zend Framework"
 

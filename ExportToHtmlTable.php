@@ -1,21 +1,21 @@
 <?php
 /*
-    "Contact Form to Database Extension" Copyright (C) 2011 Michael Simpson  (email : michael.d.simpson@gmail.com)
+    "Contact Form to Database" Copyright (C) 2011-2012 Michael Simpson  (email : michael.d.simpson@gmail.com)
 
-    This file is part of Contact Form to Database Extension.
+    This file is part of Contact Form to Database.
 
-    Contact Form to Database Extension is free software: you can redistribute it and/or modify
+    Contact Form to Database is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
-    Contact Form to Database Extension is distributed in the hope that it will be useful,
+    Contact Form to Database is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with Contact Form to Database Extension.
+    along with Contact Form to Database.
     If not, see <http://www.gnu.org/licenses/>.
 */
 
@@ -28,6 +28,12 @@ class ExportToHtmlTable extends ExportBase implements CFDBExport {
      * @var bool
      */
     static $wroteDefaultHtmlTableStyle = false;
+
+    var $useBom = false;
+
+    public function setUseBom($use) {
+        $this->useBom = $use;
+    }
 
     /**
      * Echo a table of submitted form data
@@ -74,8 +80,16 @@ class ExportToHtmlTable extends ExportBase implements CFDBExport {
 
         if ($this->isFromShortCode) {
             ob_start();
+            if ($this->useBom) {
+                // File encoding UTF-8 Byte Order Mark (BOM) http://wiki.sdn.sap.com/wiki/display/ABAP/Excel+files+-+CSV+format
+                echo chr(239) . chr(187) . chr(191);
+            }
         }
         else {
+            if ($this->useBom) {
+                // File encoding UTF-8 Byte Order Mark (BOM) http://wiki.sdn.sap.com/wiki/display/ABAP/Excel+files+-+CSV+format
+                echo chr(239) . chr(187) . chr(191);
+            }
             if ($printScripts) {
                 $pluginUrl = plugins_url('/', __FILE__);
                 wp_enqueue_script('datatables', $pluginUrl . 'DataTables/media/js/jquery.dataTables.min.js', array('jquery'));

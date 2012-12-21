@@ -46,7 +46,7 @@ msgstr "Добавьте эти две строки к файлу:"
 msgid "You do not have sufficient permissions to access this page."
 msgstr "Вы не обладаете достаточными правами для доступа к этой странице."
 
-#: CJ7DBCheckZendFramework.php:70
+#: CFDBCheckZendFramework.php70
 msgid "Missing Zend Framework"
 msgstr "Отсутствует Zend Framework"
 

@@ -605,7 +605,7 @@ msgstr "« anterior"
 msgid "Returned entries %s to %s of %s entries in the database"
 msgstr "Retornamram %s entradas de %s disponíveis no banco de dados"
 
-#: CJ7DBCheckZendFramework.php:72
+#: CFDBCheckZendFramework.php72
 msgid "Missing Zend Framework"
 msgstr "Faltando Zend Framework"
 

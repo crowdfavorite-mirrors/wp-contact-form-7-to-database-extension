@@ -1,21 +1,21 @@
 <?php
 /*
-    "Contact Form to Database Extension" Copyright (C) 2011 Michael Simpson  (email : michael.d.simpson@gmail.com)
+    "Contact Form to Database" Copyright (C) 2011-2012 Michael Simpson  (email : michael.d.simpson@gmail.com)
 
-    This file is part of Contact Form to Database Extension.
+    This file is part of Contact Form to Database.
 
-    Contact Form to Database Extension is free software: you can redistribute it and/or modify
+    Contact Form to Database is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
-    Contact Form to Database Extension is distributed in the hope that it will be useful,
+    Contact Form to Database is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with Contact Form to Database Extension.
+    along with Contact Form to Database.
     If not, see <http://www.gnu.org/licenses/>.
 */
 
@@ -172,14 +172,35 @@ class ExportBase {
         }
     }
 
+    /**
+     * @return bool
+     */
     protected function isAuthorized() {
-        return $this->isFromShortCode ?
-                $this->plugin->canUserDoRoleOption('CanSeeSubmitDataViaShortcode') :
-                $this->plugin->canUserDoRoleOption('CanSeeSubmitData');
+        if (!$this->isFromShortCode) {
+            return $this->plugin->canUserDoRoleOption('CanSeeSubmitData');
+        }
+        else {
+            $isAuth = $this->plugin->canUserDoRoleOption('CanSeeSubmitDataViaShortcode');
+            if ($isAuth && isset($this->options['role'])) {
+                $isAuth = $this->plugin->isUserRoleEqualOrBetterThan($this->options['role']);
+            }
+            return $isAuth;
+        }
     }
 
     protected function assertSecurityErrorMessage() {
-        $errMsg = __('You do not have sufficient permissions to access this data.', 'contact-form-7-to-database-extension');
+        $showMessage = true;
+
+        if (isset($this->options['role'])) {
+            // If role is being used, but default do not show the error message
+            $showMessage = false;
+        }
+
+        if (isset($this->options['permissionmsg'])) {
+            $showMessage = $this->options['permissionmsg'] != 'false';
+        }
+
+        $errMsg = $showMessage ? __('You do not have sufficient permissions to access this data.', 'contact-form-7-to-database-extension') : '';
         if ($this->isFromShortCode) {
             echo $errMsg;
         }
@@ -281,12 +302,47 @@ class ExportBase {
     }
 
     /**
+     * Execute the query and set up the results iterator
      * @param string|array $formName (if array, must be array of string)
      * @param null|string $submitTimeKeyName
      * @return void
      */
     protected function setDataIterator($formName, $submitTimeKeyName = null) {
-        $sql = $this->getPivotQuery($formName);
+        $submitTimes = null;
+
+        if (isset($this->options['random'])) {
+            $numRandom = intval($this->options['random']);
+            if ($numRandom > 0) {
+                // Digression: query for n unique random submit_time values
+                $justSubmitTimes = new ExportBase();
+                $justSubmitTimes->setOptions($this->options);
+                $justSubmitTimes->setCommonOptions();
+                unset($justSubmitTimes->options['random']);
+                $justSubmitTimes->showColumns = array('submit_time');
+                $jstSql = $justSubmitTimes->getPivotQuery($formName);
+                $justSubmitTimes->setDataIterator($formName, 'submit_time');
+                $justSubmitTimes->dataIterator->query(
+                    $jstSql,
+                    $justSubmitTimes->rowFilter);
+
+                $allSubmitTimes = null;
+                while ($justSubmitTimes->dataIterator->nextRow()) {
+                    $allSubmitTimes[] = $justSubmitTimes->dataIterator->row['submit_time'];
+                }
+                if (!empty($allSubmitTimes)) {
+                    if (count($allSubmitTimes) < $numRandom) {
+                        $submitTimes = $allSubmitTimes;
+                    }
+                    else {
+                        shuffle($allSubmitTimes); // randomize
+                        $submitTimes = array_slice($allSubmitTimes, 0, $numRandom);
+                    }
+                }
+            }
+        }
+
+
+        $sql = $this->getPivotQuery($formName, false, $submitTimes);
         $this->dataIterator = new CFDBQueryResultIterator();
 //        $this->dataIterator->fileColumns = $this->getFileMetaData($formName);
 
@@ -327,26 +383,31 @@ class ExportBase {
     /**
      * @param string|array $formName (if array, must be array of string)
      * @param bool $count
+     * @param $submitTimes array of string submit_time values that are to be specifically queried
      * @return string
      */
-    public function &getPivotQuery($formName, $count = false) {
+    public function &getPivotQuery($formName, $count = false, $submitTimes = null) {
         global $wpdb;
         $tableName = $this->plugin->getSubmitsTableName();
 
         $formNameClause = '';
         if (is_array($formName)) {
-            $formNameClause = 'WHERE `form_name` in ( \'' . implode('\', \'', $formName) . '\' )';
+            $formNameClause = '`form_name` in ( \'' . implode('\', \'', $formName) . '\' )';
         }
         else if ($formName !== null) {
-            $formNameClause =  "WHERE `form_name` = '$formName'";
+            $formNameClause =  "`form_name` = '$formName'";
         }
 
-        $rows = $wpdb->get_results("SELECT DISTINCT `field_name`, `field_order` FROM `$tableName` $formNameClause ORDER BY field_order");
+        $submitTimesClause = '';
+        if (is_array($submitTimes) && !empty($submitTimes)) {
+            $submitTimesClause = 'AND submit_time in ( ' . implode(', ', $submitTimes) . ' )';
+        }
+
+        //$rows = $wpdb->get_results("SELECT DISTINCT `field_name`, `field_order` FROM `$tableName` WHERE $formNameClause ORDER BY field_order"); // Pagination bug
+        $rows = $wpdb->get_results("SELECT DISTINCT `field_name` FROM `$tableName` WHERE $formNameClause ORDER BY field_order");
         $fields = array();
         foreach ($rows as $aRow) {
-            if (!in_array($aRow->field_name, $fields)) {
-                $fields[] = $aRow->field_name;
-            }
+            $fields[] = $aRow->field_name;
         }
         $sql = '';
         if ($count) {
@@ -359,7 +420,7 @@ class ExportBase {
         if (!$count) {
             $sql .= ",\n GROUP_CONCAT(if(`file` is null or length(`file`) = 0, null, `field_name`)) AS 'fields_with_file'";
         }
-        $sql .=  "\nFROM `$tableName` \n$formNameClause \nGROUP BY `submit_time` ";
+        $sql .=  "\nFROM `$tableName` \nWHERE $formNameClause $submitTimesClause \nGROUP BY `submit_time` ";
         if ($count) {
             $sql .= ') form';
         }

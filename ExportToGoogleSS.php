@@ -1,25 +1,25 @@
 <?php
 /*
-    "Contact Form to Database Extension" Copyright (C) 2011 Michael Simpson  (email : michael.d.simpson@gmail.com)
+    "Contact Form to Database" Copyright (C) 2011-2012 Michael Simpson  (email : michael.d.simpson@gmail.com)
 
-    This file is part of Contact Form to Database Extension.
+    This file is part of Contact Form to Database.
 
-    Contact Form to Database Extension is free software: you can redistribute it and/or modify
+    Contact Form to Database is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
-    Contact Form to Database Extension is distributed in the hope that it will be useful,
+    Contact Form to Database is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with Contact Form to Database Extension.
+    along with Contact Form to Database.
     If not, see <http://www.gnu.org/licenses/>.
 */
 
-require_once('CJ7DBCheckZendFramework.php');
+require_once('CFDBCheckZendFramework.php');
 require_once('ExportToCsvUtf8.php');
 require_once('ExportBase.php');
 require_once('CFDBExport.php');
@@ -39,7 +39,7 @@ class ExportToGoogleSS extends ExportBase implements CFDBExport {
         // Headers
         $this->echoHeaders('Content-Type: text/html; charset=UTF-8');
 
-        if (!CJ7DBCheckZendFramework::checkIncludeZend()) {
+        if (!CFDBCheckZendFramework::checkIncludeZend()) {
             return;
         }
 

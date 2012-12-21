@@ -46,7 +46,7 @@ msgstr "Voeg deze twee regels toe aan het bestand:"
 msgid "You do not have sufficient permissions to access this page."
 msgstr "U heeft niet voldoende rechten om deze pagina te openen."
 
-#: CJ7DBCheckZendFramework.php:70
+#: CFDBCheckZendFrameworkphp:70
 msgid "Missing Zend Framework"
 msgstr "Ontbrekend Zend Framework"
 

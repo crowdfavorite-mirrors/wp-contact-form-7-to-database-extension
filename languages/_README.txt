@@ -15,13 +15,4 @@ NOTE: Strings that decorate DataTable widgets use a different i18n file.
 Look at the file: dt_i18n/README.txt for more information
 
 How can I create a new translation file?
-- Download and install Poedit from http://www.poedit.net/
-- Run Poedit
-- "File" menu, "New catalog from POT file..." and open the file from this directory:
-        contact-form-7-to-database-extension.pot
-- Enter your translation for each string
-- Save
-- Rename the files to follow the convention above
-- Upload your files into this directory in your WordPress installation
-- ** Send your files to the Plugin author so he can share them with others
-        email: michael_d_simpson@gmail.com
+- Follow the instructions at http://cfdbplugin.com/?page_id=7

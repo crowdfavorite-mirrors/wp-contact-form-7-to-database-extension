@@ -395,7 +395,7 @@ msgstr "Geri Gelen (Tekrarlanan) %s giriş %s ile %s"
 msgid "How to Set up Google Spreadsheet to pull data from WordPress"
 msgstr "Wordpress den Google Dökümanlara nasıl veri çekilir?"
 
-#: CJ7DBCheckZendFramework.php:72
+#: CFDBCheckZendFrameworkphp:72
 msgid "Missing Zend Framework"
 msgstr "Zend Framework Eksik"
 

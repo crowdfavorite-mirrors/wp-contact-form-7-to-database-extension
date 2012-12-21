@@ -38,7 +38,7 @@ msgstr "Localizeaza si editeaza acest fisier in radacina folderului in care ai i
 msgid "Add these two lines to the file:"
 msgstr "Adauga aceste doua linii in fisierul:"
 
-#: CJ7DBCheckZendFramework.php:72
+#: CFDBCheckZendFramework.php72
 msgid "Missing Zend Framework"
 msgstr "Nu exista Zend Framework"
 

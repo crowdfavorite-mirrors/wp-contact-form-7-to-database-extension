@@ -1,32 +1,52 @@
-=== Contact Form 7 to Database Extension ===
+=== Contact Form DB ===
 Contributors: msimpson
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=NEVDJ792HKGFN&lc=US&item_name=Wordpress%20Plugin&item_number=cf7%2dto%2ddb%2dextension&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted
-Tags: contact form,database,contact form database,save contact form
+Tags: contact form,database,contact form database,save contact form,form database,CFDB
 Requires at least: 3.2.1
-Tested up to: 3.3.1
-Stable tag: 2.3
+Tested up to: 3.4
+Stable tag: 2.4.4
 
 Saves submitted form data to the database and provides short codes to display it. Captures data from Contact Form 7 and Fast Secure Contact Form
 
 == Description ==
 
-Saves form submissions to the database that come from Contact Form 7 (CF7) plugin and/or Fast Secure Contact Form (FSCF) plugin.
+This "CFDB" plugin saves contact form submissions to your WordPress database and provides short codes to retrieve and display the data.
 
-CF7 and FSCF are great plugins but but were lacking one thing...the ability to save the form data to the database.
-And if you get a lot of form submissions, then you end up sorting through a lot of email.
-This plugin-to-a-plugin provides that functionality.
+By simply installing the plugin, it will automatically begin to capture submissions from:
 
-You will need to have CF7 and/or FSCF installed along with this plugin.
-When using CF7, this plugin also puts a menu item in the Administration Plugins menu where you can see the data in the database.
-When using FSCF, this plugin puts links on its Admin page.
-You can also use the [cfdb-html], [cfdb-table], [cfdb-datatable], [cfdb-value] and [cfdb-json] shortcodes to display the data on a non-admin page on your site.
+* JetPack Contact Form plugin
+* Contact Form 7 (CF7) plugin
+* Fast Secure Contact Form (FSCF) plugin
 
-Disclaimer: I am not the maker of Contact Form 7 nor Fast Secure Contact Form and am not associated with the development of those plugins.
+Other form submissions can be saved with the addition of the <a href="http://cfdbplugin.com/?page_id=508">[cfdb-save-form-post]</a> short code on the target submission page.
+
+Contact form plugins are great but generally one thing...the ability to save and retrieve the form data to/from the database.
+If you get a lot of form submissions, then you end up sorting through a lot of email.
+
+Looking at your data in the WP Admin Area
+
+This plugin provides three administration pages
+
+* "Database Page" to view and export form submission data at (http://you-site.com/wp-admin/admin.php?page=CF7DBPluginSubmissions)
+* "Database Short Code" page to generate short codes and exports (http://you-site.com/wp-admin/admin.php?page=CF7DBPluginShortCodeBuilder)
+* "Database Options" to change configuration parameters (http://you-site.com/wp-admin/admin.php?page=CF7DBPluginSettings)
+
+Finding Admin Pages
+
+* If you have CF7 installed and activated, look under the "Contact" menu in the Admin area.
+* If you have FSCF installed and activated, find links to these pages on the FSCF admin page.
+* If you only have JetPack installed, then you will have to enter the URLs manually into your browser.
+
+Displaying Saved Data in Posts and Pages
+
+Use the [cfdb-html], [cfdb-table], [cfdb-datatable], [cfdb-value] and [cfdb-json] short codes to display the data on a non-admin page on your site.
+
+Disclaimer: I am not the maker of JetPack, Contact Form 7 nor Fast Secure Contact Form and am not associated with the development of those plugins.
 
 == Installation ==
 
 1. Your WordPress site must be running PHP5 or better. This plugin will fail to activate if your site is running PHP4.
-1. Be sure that Contact Form 7 and/or Fast Secure Contact Form is installed and activated (this is an extension to them)
+1. Be sure that any of Contact Form 7, Fast Secure Contact Form and/or JetPack is installed and activated (this is an extension to them)
 1. Fast Secure Contact Form should be at least version 2.9.7
 
 Notes:
@@ -67,6 +87,36 @@ prevent it from being deleted. You can always deactivate the plugin without loos
 1. Admin Panel view of submitted form data
 
 == Changelog ==
+
+= 2.4.5 =
+* Fixing issue where admin page for data does not show for users less than administration even when permissions are set for such users to view the data
+
+= 2.4.4 =
+* Fixed WordPress 3.5 compatibility issue where uploaded files were not being saved.
+* New top-level menu on administration page
+* JetPack form submissions are now separated based on the JetPack form ID. The form name will be listed as 'JetPack Contact Form ' followed by the form's numeric ID.
+
+= 2.4.3 =
+* Added Japanese language support (Shift-JIS)
+
+= 2.4.2 =
+* Fixed character encoding issues with Excel IQY
+
+= 2.4.1 =
+* Added new short code attribute "role" to limit short code output only to those with sufficient role.
+* Added new short code attribute "permissionmsg" to allow turning off the "You do not have sufficient permissions to access this data" message
+
+= 2.4 =
+* Now captures data from JetPack Contact Form
+* Added filter hook <a href="http://cfdbplugin.com/?page_id=747">cfdb_form_data</a> that can be used to change data before it gets submitted
+* Added "random" option to short code. Used to retrieve random subset of rows from the query.
+Usage example: [cfdb-table form="myform" random="1"].
+The number is the number of random rows to return.
+* Added button to remove _wpcf7 columns in admin page
+
+= 2.3.2 =
+* Bug fix that occasionally prevents pagination in the admin view of data
+* Bug fix where external integrations posting to CFDB might fail if list of upload files was null instead of empty array
 
 = 2.3.1 =
 * Bug fix where $_GET and $_COOKIE would not work

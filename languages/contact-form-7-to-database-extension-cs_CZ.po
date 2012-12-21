@@ -308,7 +308,7 @@ msgstr "Uložit změny"
 msgid "How to Set up Google Spreadsheet to pull data from WordPress"
 msgstr "Jak nastavit tabulky Google pro získání dat z WordPressu"
 
-#: CJ7DBCheckZendFramework.php:72
+#: CFDBCheckZendFramework.php72
 #@ contact-form-7-to-database-extension
 msgid "Missing Zend Framework"
 msgstr "Chybějící Zend Framework"

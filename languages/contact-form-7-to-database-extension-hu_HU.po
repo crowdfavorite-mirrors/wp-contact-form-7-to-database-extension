@@ -61,7 +61,7 @@ msgstr ""
 msgid "Add these two lines to the file:"
 msgstr "Adja a következő két sort a fájlhoz:"
 
-#: CJ7DBCheckZendFramework.php:72
+#: CFDBCheckZendFramework.php72
 msgid "Missing Zend Framework"
 msgstr "Hiányzó Zend Framework"
 

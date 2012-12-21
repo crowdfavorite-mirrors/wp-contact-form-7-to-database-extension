@@ -1,21 +1,21 @@
 <?php
 /*
-    "Contact Form to Database Extension" Copyright (C) 2011 Michael Simpson  (email : michael.d.simpson@gmail.com)
+    "Contact Form to Database" Copyright (C) 2011-2012 Michael Simpson  (email : michael.d.simpson@gmail.com)
 
-    This file is part of Contact Form to Database Extension.
+    This file is part of Contact Form to Database.
 
-    Contact Form to Database Extension is free software: you can redistribute it and/or modify
+    Contact Form to Database is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
-    Contact Form to Database Extension is distributed in the hope that it will be useful,
+    Contact Form to Database is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with Contact Form to Database Extension.
+    along with Contact Form to Database.
     If not, see <http://www.gnu.org/licenses/>.
 */
 
@@ -34,7 +34,7 @@ class ExportToGoogleLiveData implements CFDBExport {
         header('Cache-Control: no-store, no-cache, must-revalidate');
 
         $pluginUrlDir = $plugin->getPluginDirUrl();
-        $scriptLink = $pluginUrlDir . 'Cf7ToDBGGoogleSS.js.php';
+        $scriptLink = $pluginUrlDir . 'CFDBGoogleSSLiveData.php';
         $imageUrlDir = $pluginUrlDir . "help";
         $siteUrl = get_option('home');
         $search = isset($options['search']) ? $options['search'] : '';

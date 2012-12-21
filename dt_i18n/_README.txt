@@ -20,6 +20,6 @@ Where:
     locale is your locale string, which is typically in the form "ll_CC", but is whatever
             is returned from WordPress function get_locale()
 
-** If you create a new translation file, please send a copy to the author of this plugin
-   so he can share it with others. Also, send it to a contact at DataTable.net.
-   email: michael_d_simpson@gmail.com
+** If you create a new translation file, please post a copy to the author of this plugin
+   so he can share it with others: http://cfdbplugin.com/?page_id=62
+   Also, send it to a contact at DataTable.net.
