@@ -479,8 +479,8 @@ class CF7DBPlugin extends CF7DBPluginLifeCycle {
             if (is_user_logged_in()) {
                 $current_user = wp_get_current_user(); // WP_User
                 $user = $current_user->user_login;
-                $cf7->user = $user;
             }
+            $cf7->user = $user;
             try {
                 $newCf7 = apply_filters('cfdb_form_data', $cf7);
                 if ($newCf7 && is_object($newCf7)) {

@@ -1,6 +1,6 @@
 <?php
 /*
-    "Contact Form to Database" Copyright (C) 2011-2012 Michael Simpson  (email : michael.d.simpson@gmail.com)
+    "Contact Form to Database" Copyright (C) 2011-2013 Michael Simpson  (email : michael.d.simpson@gmail.com)
 
     This file is part of Contact Form to Database.
 
@@ -415,6 +415,8 @@ class ExportBase {
         }
         $sql .= "SELECT `submit_time` AS 'Submitted'";
         foreach ($fields as $aCol) {
+            // Escape single quotes in column name
+            $aCol = mysql_real_escape_string($aCol);
             $sql .= ",\n max(if(`field_name`='$aCol', `field_value`, null )) AS '$aCol'";
         }
         if (!$count) {
