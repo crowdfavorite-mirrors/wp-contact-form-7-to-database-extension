@@ -1,6 +1,6 @@
 <?php
 /*
-    "Contact Form to Database" Copyright (C) 2011-2012 Michael Simpson  (email : michael.d.simpson@gmail.com)
+    "Contact Form to Database" Copyright (C) 2011-2013 Michael Simpson  (email : michael.d.simpson@gmail.com)
 
     This file is part of Contact Form to Database.
 
@@ -26,6 +26,7 @@ class ExportToCsvUtf8 extends ExportBase implements CFDBExport {
 
     var $useBom = false;
     var $useShiftJIS = false; // for Japanese
+    var $bak = false;
 
     public function setUseBom($use) {
         $this->useBom = $use;
@@ -34,7 +35,7 @@ class ExportToCsvUtf8 extends ExportBase implements CFDBExport {
     public function setUseShiftJIS($use) {
         // If mb_convert_encoding function is not enabled (mb_string module is not installed),
         // then converting cannot be done.
-        if ($use && !function_exists('mb_convert_encoding')){
+        if ($use && !function_exists('mb_convert_encoding')) {
             $this->useShiftJIS = false;
         }
         else {
@@ -43,6 +44,14 @@ class ExportToCsvUtf8 extends ExportBase implements CFDBExport {
     }
 
     public function export($formName, $options = null) {
+
+        if (isset($options['bak']) && $options['bak'] == 'true') {
+            $this->bak = true;
+            $options['hide'] = 'Submitted';
+            $options['show'] = 'submit_time,/.*/';
+            $options['unbuffered'] = 'true';
+        }
+
         $this->setOptions($options);
         $this->setCommonOptions();
 
@@ -52,7 +61,7 @@ class ExportToCsvUtf8 extends ExportBase implements CFDBExport {
             return;
         }
 
-        if ($this->options && is_array($this->options)) {
+        if ($this->options && !$this->bak && is_array($this->options)) {
             if (isset($this->options['bom'])) {
                 $this->useBom = $this->options['bom'] == 'true';
             }

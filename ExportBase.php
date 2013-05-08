@@ -65,6 +65,11 @@ class ExportBase {
     var $style;
 
     /**
+     * @var array assoc array of column names to display names
+     */
+    var $headers;
+
+    /**
      * @var CF7DBEvalutator|CF7FilterParser|CF7SearchEvaluator
      */
     var $rowFilter;
@@ -168,6 +173,19 @@ class ExportBase {
                 require_once('CF7SearchEvaluator.php');
                 $this->rowFilter = new CF7SearchEvaluator;
                 $this->rowFilter->setSearch($this->options['search']);
+            }
+
+            if (isset($this->options['headers'])) { // e.g. "col1=Column 1 Display Name,col2=Column2 Display Name"
+                $headersList = preg_split('/,/', $this->options['headers'], -1, PREG_SPLIT_NO_EMPTY);
+                if (is_array($headersList)) {
+                    $this->headers = array();
+                    foreach ($headersList as $nameEqualValue) {
+                        $nameEqualsValueArray = explode('=', $nameEqualValue, 2); // col1=Column 1 Display Name
+                        if (count($nameEqualsValueArray) >= 2) {
+                            $this->headers[$nameEqualsValueArray[0]] = $nameEqualsValueArray[1];
+                        }
+                    }
+                }
             }
         }
     }
@@ -390,12 +408,20 @@ class ExportBase {
         global $wpdb;
         $tableName = $this->plugin->getSubmitsTableName();
 
-        $formNameClause = '';
+        $formNameClause = '1=1';
         if (is_array($formName)) {
-            $formNameClause = '`form_name` in ( \'' . implode('\', \'', $formName) . '\' )';
+            $formNameArray = $this->escapeAndQuoteArrayValues($formName);
+            $formNameClause = '`form_name` in ( ' . implode(', ', $formNameArray) . ' )';
         }
-        else if ($formName !== null) {
-            $formNameClause =  "`form_name` = '$formName'";
+        else if ($formName !== null && $formName != '*') { // * => all forms
+            if (strpos($formName, ',') !== false) {
+                $formNameArray = explode(',', $formName);
+                $formNameArray = $this->escapeAndQuoteArrayValues($formNameArray);
+                $formNameClause = '`form_name` in ( ' . implode(', ', $formNameArray) . ' )';
+            }
+            else {
+                $formNameClause =  "`form_name` = '". mysql_real_escape_string($formName) . "'";
+            }
         }
 
         $submitTimesClause = '';
@@ -484,6 +510,18 @@ class ExportBase {
         }
         //echo $sql; // debug
         return $sql;
+    }
+
+    /**
+     * @param $anArray array
+     * @return array of quoted mysql_real_escape_string values
+     */
+    public function escapeAndQuoteArrayValues($anArray) {
+        $retArray = array();
+        foreach ($anArray as $aValue) {
+            $retArray[] = '\'' . mysql_real_escape_string($aValue) . '\'';
+        }
+        return $retArray;
     }
 
     /**

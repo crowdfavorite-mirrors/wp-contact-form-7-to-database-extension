@@ -1,6 +1,6 @@
 <?php
 /*
-    "Contact Form to Database" Copyright (C) 2011-2012 Michael Simpson  (email : michael.d.simpson@gmail.com)
+    "Contact Form to Database" Copyright (C) 2011-2013 Michael Simpson  (email : michael.d.simpson@gmail.com)
 
     This file is part of Contact Form to Database.
 
@@ -85,8 +85,7 @@ class CFDBQueryResultIterator {
     /**
      * @param  $sql string
      * @param  $rowFilter CF7DBEvalutator|CF7FilterParser|CF7SearchEvaluator
-     * @param array $queryOptions array
-     * @return
+     * @param  $queryOptions array
      */
     public function query(&$sql, $rowFilter, $queryOptions = array()) {
         $this->rowFilter = $rowFilter;

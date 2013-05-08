@@ -1,6 +1,6 @@
 <?php
 /*
-    "Contact Form to Database" Copyright (C) 2011-2012 Michael Simpson  (email : michael.d.simpson@gmail.com)
+    "Contact Form to Database" Copyright (C) 2011-2013 Michael Simpson  (email : michael.d.simpson@gmail.com)
 
     This file is part of Contact Form to Database.
 
@@ -47,6 +47,7 @@ class ExportToHtmlTable extends ExportBase implements CFDBExport {
 
         $canDelete = false;
         $useDT = false;
+        $editMode = false;
         $printScripts = false;
         $printStyles = false;
 
@@ -62,6 +63,9 @@ class ExportToHtmlTable extends ExportBase implements CFDBExport {
                 if (isset($options['printStyles'])) {
                     $printStyles = $options['printStyles'];
                 }
+                if (isset($options['edit'])) {
+                    $editMode = 'true' == $options['edit'];
+                }
             }
 
             if (isset($options['canDelete'])) {
@@ -73,6 +77,9 @@ class ExportToHtmlTable extends ExportBase implements CFDBExport {
         if (!$this->isAuthorized()) {
             $this->assertSecurityErrorMessage();
             return;
+        }
+        if ($editMode && !$this->plugin->canUserDoRoleOption('CanChangeSubmitData')) {
+            $editMode = false;
         }
 
         // Headers
@@ -108,19 +115,27 @@ class ExportToHtmlTable extends ExportBase implements CFDBExport {
         $this->setDataIterator($formName, $submitTimeKeyName);
 
         if ($useDT) {
-            $dtJsOptions = isset($options['dt_options']) ? $options['dt_options'] : false;
-            if (!$dtJsOptions) {
-                $dtJsOptions = '"bJQueryUI": true, "aaSorting": []';
-                $i18nUrl = $this->plugin->getDataTableTranslationUrl();
-                if ($i18nUrl) {
-                    $dtJsOptions = $dtJsOptions . ", \"oLanguage\": { \"sUrl\":  \"$i18nUrl\" }";
+            $dtJsOptions = isset($options['dt_options']) ?
+                    $options['dt_options'] :
+                    '"bJQueryUI": true, "aaSorting": [], "iDisplayLength": -1, "aLengthMenu": [[25, 50, 100, -1], [25, 50, 100, "' . __('All', 'contact-form-7-to-database-extension') . '"]]';
+            $i18nUrl = $this->plugin->getDataTableTranslationUrl();
+            if ($i18nUrl) {
+                if (!empty($dtJsOptions)) {
+                    $dtJsOptions .= ',';
                 }
+                $dtJsOptions .=  " \"oLanguage\": { \"sUrl\":  \"$i18nUrl\" }";
             }
+            $dtJsOptions = stripslashes($dtJsOptions); // unescape single quotes when posted via URL
             ?>
             <script type="text/javascript" language="Javascript">
                 jQuery(document).ready(function() {
                     jQuery('#<?php echo $this->htmlTableId ?>').dataTable({
-                        <?php echo $dtJsOptions ?> })
+                        <?php
+                            echo $dtJsOptions;
+                            if ($editMode) {
+                                do_action_ref_array('cfdb_edit_fnDrawCallbackJsonForSC', array($this->htmlTableId));
+                            }
+                        ?> })
                 });
             </script>
             <?php
@@ -193,7 +208,11 @@ class ExportToHtmlTable extends ExportBase implements CFDBExport {
 
             }
             foreach ($this->dataIterator->displayColumns as $aCol) {
-                printf('<th title="%s"><div id="%s,%s">%s</div></th>', $aCol, $formName, $aCol, $aCol);
+                $colDisplayValue = $aCol;
+                if ($this->headers && isset($this->headers[$aCol])) {
+                    $colDisplayValue = $this->headers[$aCol];
+                }
+                printf('<th title="%s"><div id="%s,%s">%s</div></th>', $colDisplayValue, $formName, $aCol, $colDisplayValue);
             }
             ?>
             </tr>
