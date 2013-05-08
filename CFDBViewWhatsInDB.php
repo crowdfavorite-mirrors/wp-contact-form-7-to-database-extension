@@ -1,6 +1,6 @@
 <?php
 /*
-    "Contact Form to Database" Copyright (C) 2011-2012 Michael Simpson  (email : michael.d.simpson@gmail.com)
+    "Contact Form to Database" Copyright (C) 2011-2013 Michael Simpson  (email : michael.d.simpson@gmail.com)
 
     This file is part of Contact Form to Database.
 
@@ -38,8 +38,8 @@ class CFDBViewWhatsInDB extends CFDBView {
         $tableHtmlId = 'cf2dbtable';
 
         // Identify which forms have data in the database
-        $formsFromQuery = $wpdb->get_results("select distinct `form_name` from `$tableName` order by `form_name`");
-        if ($formsFromQuery == null || count($formsFromQuery) == 0) {
+        $formsList = $plugin->getForms();
+        if (count($formsList) == 0) {
             _e('No form submissions in the database', 'contact-form-7-to-database-extension');
             return;
         }
@@ -58,8 +58,10 @@ class CFDBViewWhatsInDB extends CFDBView {
             $currSelection = $_GET['form_name'];
         }
         // If there is only one form in the DB, select that by default
-        if (!$currSelection && count($formsFromQuery) == 1) {
-            $currSelection = $formsFromQuery[0]->form_name;
+        if (!$currSelection && count($formsList) == 1) {
+            $currSelection = $formsList[0];
+            // Bug fix: Need to set this so the Editor plugin can reference it
+            $_REQUEST['form_name'] = $formsList[0];
         }
         if ($currSelection) {
             // Check for delete operation
@@ -108,9 +110,8 @@ class CFDBViewWhatsInDB extends CFDBView {
                     <input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>"/>
                     <select name="form_name" id="form_name" onchange="this.form.submit();">
                         <option value=""><?php _e('* Select a form *', 'contact-form-7-to-database-extension') ?></option>
-                        <?php foreach ($formsFromQuery as $aRow) {
-                        $formName = $aRow->form_name;
-                        $selected = ($formName == $currSelection) ? "selected" : "";
+                        <?php foreach ($formsList as $formName) {
+                            $selected = ($formName == $currSelection) ? "selected" : "";
                         ?>
                         <option value="<?php echo $formName ?>" <?php echo $selected ?>><?php echo $formName ?></option>
                         <?php } ?>
@@ -190,6 +191,7 @@ class CFDBViewWhatsInDB extends CFDBView {
                     }
                 </script>
                 <form name="exportcsv" action="">
+                    <input type="hidden" name="unbuffered" value="true"/>
                     <select size="1" name="enc">
                         <option id="IQY" value="IQY">
                             <?php _e('Excel Internet Query', 'contact-form-7-to-database-extension'); ?>
@@ -271,9 +273,12 @@ class CFDBViewWhatsInDB extends CFDBView {
                 var oTable;
                 jQuery(document).ready(function() {
                     oTable = jQuery('#<?php echo $tableHtmlId ?>').dataTable({ <?php // "sDom": 'Rlfrtip', // ColReorder ?>
-                    "bJQueryUI": true,
-                    "aaSorting": [],
-                    "bScrollCollapse": true
+                        "bJQueryUI": true,
+                        "aaSorting": [],
+                        "bScrollCollapse": true,
+                        "sScrollX":"100%",
+                        "iDisplayLength": -1,
+                        "aLengthMenu": [[25, 50, 100, -1], [25, 50, 100, "<?php _e('All', 'contact-form-7-to-database-extension')?>"]]
                         <?php
                         if ($i18nUrl) {
                             echo ", \"oLanguage\": { \"sUrl\":  \"$i18nUrl\" }";
@@ -338,8 +343,9 @@ class CFDBViewWhatsInDB extends CFDBView {
                 <td align="center" colspan="4">
                     <span style="font-size:x-small; font-style: italic;">
                         <?php _e('Did you know: This plugin captures data from both these plugins:', 'contact-form-7-to-database-extension'); ?>
-                        <a target="_cf7" href="http://wordpress.org/extend/plugins/contact-form-7/">Contact Form 7</a>
-                        <a target="_fscf" href="http://wordpress.org/extend/plugins/si-contact-form/">Fast Secure Contact Form</a>
+                        <a target="_cf7" href="http://wordpress.org/extend/plugins/contact-form-7/">Contact Form 7</a>,
+                        <a target="_fscf" href="http://wordpress.org/extend/plugins/si-contact-form/">Fast Secure Contact Form</a>,
+                        <a target="_jetpack" href="http://wordpress.org/extend/plugins/jetpack/">JetPack Contact Form</a>
                     </span>
                 </td>
             </tr>

@@ -1,6 +1,6 @@
 <?php
 /*
-    "Contact Form to Database" Copyright (C) 2011-2012 Michael Simpson  (email : michael.d.simpson@gmail.com)
+    "Contact Form to Database" Copyright (C) 2011-2013 Michael Simpson  (email : michael.d.simpson@gmail.com)
 
     This file is part of Contact Form to Database.
 
@@ -48,6 +48,7 @@ class CFDBShortcodeDataTable extends ShortCodeScriptLoader {
 
 //        wp_register_script('datatables', 'http://www.datatables.net/release-datatables/media/js/jquery.dataTables.js', array('jquery'), false, true);
         wp_enqueue_script('datatables',  plugins_url('/', __FILE__) . 'DataTables/media/js/jquery.dataTables.min.js', array('jquery'));
+        do_action_ref_array('cfdb_edit_enqueue', array());
         wp_print_scripts('datatables');
     }
 

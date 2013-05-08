@@ -28,12 +28,6 @@ class CF7DBPluginExporter {
 
         //print_r($params);
 
-        if (!isset($params['form'])) {
-            include_once('CFDBDie.php');
-            CFDBDie::wp_die(__('Error: No "form" parameter submitted', 'contact-form-7-to-database-extension'));
-            return;
-        }
-
         // Assumes coming from CF7DBPlugin::whatsInTheDBPage()
         $key = '3fde789a'; //substr($_COOKIE['PHPSESSID'], - 5); // session_id() doesn't work
         if (isset($params['guser'])) {
@@ -151,6 +145,11 @@ class CF7DBPluginExporter {
                 $exporter = new ExportToCsvUtf8();
                 $exporter->setUseBom(false);
                 $exporter->setUseShiftJIS(true);
+                $exporter->export($formName, $options);
+                break;
+            case 'RSS':
+                require_once('ExportToRSS.php');
+                $exporter = new ExportToRSS();
                 $exporter->export($formName, $options);
                 break;
             case 'CSVUTF8':

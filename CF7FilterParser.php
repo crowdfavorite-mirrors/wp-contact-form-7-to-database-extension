@@ -161,11 +161,13 @@ class CF7FilterParser implements CF7DBEvalutator {
      * @return boolean result of evaluating $data against expression tree
      */
     public function evaluate(&$data) {
-        // Use times in local timezone
         if (function_exists('get_option')) {
-            $localTz = get_option('timezone_string');
-            if ($localTz) {
-                date_default_timezone_set($localTz);
+            $tz = get_option('CF7DBPlugin_Timezone'); // see CFDBPlugin->setTimezone()
+            if (!$tz) {
+                $tz =  get_option('timezone_string');
+            }
+            if ($tz) {
+                date_default_timezone_set($tz);
             }
         }
         

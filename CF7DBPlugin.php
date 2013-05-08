@@ -1,6 +1,6 @@
 <?php
 /*
-    "Contact Form to Database" Copyright (C) 2011-2012 Michael Simpson  (email : michael.d.simpson@gmail.com)
+    "Contact Form to Database" Copyright (C) 2011-2013 Michael Simpson  (email : michael.d.simpson@gmail.com)
 
     This file is part of Contact Form to Database.
 
@@ -46,7 +46,7 @@ class CF7DBPlugin extends CF7DBPluginLifeCycle {
     public function getOptionMetaData() {
         return array(
             //'_version' => array('Installed Version'), // For testing upgrades
-            'Donated' => array(__('I have donated to this plugin', 'contact-form-7-to-database-extension'), 'false', 'true'),
+//            'Donated' => array(__('I have donated to this plugin', 'contact-form-7-to-database-extension'), 'false', 'true'),
             'IntegrateWithCF7' => array(__('Capture form submissions from Contact Form 7 Plugin', 'contact-form-7-to-database-extension'), 'true', 'false'),
             'IntegrateWithFSCF' => array(__('Capture form submissions from Fast Secure Contact Form Plugin', 'contact-form-7-to-database-extension'), 'true', 'false'),
             'IntegrateWithJetPackContactForm' => array(__('Capture form submissions from JetPack Contact Form', 'contact-form-7-to-database-extension'), 'true', 'false'),
@@ -55,7 +55,10 @@ class CF7DBPlugin extends CF7DBPluginLifeCycle {
             'CanSeeSubmitDataViaShortcode' => array(__('Can See Submission when using shortcodes', 'contact-form-7-to-database-extension'),
                                                     'Administrator', 'Editor', 'Author', 'Contributor', 'Subscriber', 'Anyone'),
             'CanChangeSubmitData' => array(__('Can Edit/Delete Submission data', 'contact-form-7-to-database-extension'),
-                                           'Administrator', 'Editor', 'Author', 'Contributor', 'Subscriber'),
+                                           'Administrator', 'Editor', 'Author', 'Contributor', 'Subscriber', 'Anyone'),
+            'AllowRSS' => array(__('Allow RSS URLs', 'contact-form-7-to-database-extension') .
+                    ' <a target="_blank" href="http://cfdbplugin.com/?p=918">' . __('(Creates a security hole)', 'contact-form-7-to-database-extension') . '</a>', 'false', 'true'),
+            'Timezone' => array(__('Timezone to capture Submit Time. Blank will use WordPress Timezone setting. <a target="_blank" href="http://www.php.net/manual/en/timezones.php">Options</a>', 'contact-form-7-to-database-extension')),
             'MaxRows' => array(__('Maximum number of rows to retrieve from the DB for the Admin display', 'contact-form-7-to-database-extension')),
             'UseDataTablesJS' => array(__('Use Javascript-enabled tables in Admin Database page', 'contact-form-7-to-database-extension'), 'true', 'false'),
             'ShowLineBreaksInDataTable' => array(__('Show line breaks in submitted data table', 'contact-form-7-to-database-extension'), 'true', 'false'),
@@ -229,12 +232,12 @@ class CF7DBPlugin extends CF7DBPluginLifeCycle {
 
     protected function initOptions() {
         // By default ignore CF7 metadata fields
-        $this->addOption('NoSaveFields', '_wpcf7,_wpcf7_version,_wpcf7_unit_tag,_wpnonce,_wpcf7_is_ajax_call,_wpcf7_captcha_challenge_captcha');
+        $this->addOption('NoSaveFields', '/.*wpcf7.*/,_wpnonce');
     }
 
     public function add_wpcf7_noSaveFields() {
         $nsfArray = explode(',', $this->getOption('NoSaveFields',''));
-        $wpcf7Fields = array('_wpcf7', '_wpcf7_version', '_wpcf7_unit_tag', '_wpnonce', '_wpcf7_is_ajax_call', '_wpcf7_captcha_challenge_captcha');
+        $wpcf7Fields = array('/.*wpcf7.*/', '_wpnonce');
         foreach ($wpcf7Fields as $aWpcf7) {
            if (!in_array($aWpcf7, $nsfArray)) {
                $nsfArray[] = $aWpcf7;
@@ -252,6 +255,9 @@ class CF7DBPlugin extends CF7DBPluginLifeCycle {
     }
 
     public function addActionsAndFilters() {
+        // Admin notices
+        add_action('admin_notices', array(&$this, 'addAdminNotices'));
+
         // Add the Admin Config page for this plugin
 
         // Add Config page as a top-level menu item on the Admin page
@@ -401,8 +407,7 @@ class CF7DBPlugin extends CF7DBPluginLifeCycle {
             if (version_compare(phpversion(), '5.1.0') == -1) {
                 $invalid = -1;
             }
-            // Use times in local timezone
-            date_default_timezone_set(get_option('timezone_string'));
+            $this->setTimezone();
             $time = strtotime($submitTime);
         }
         if ($invalid === $time) {
@@ -465,7 +470,7 @@ class CF7DBPlugin extends CF7DBPluginLifeCycle {
     public function saveFormData($cf7) {
         try {
             $title = stripslashes($cf7->title);
-            if (in_array($title, $this->getNoSaveForms())) {
+            if ($this->fieldMatches($title, $this->getNoSaveForms())) {
                 return; // Don't save in DB
             }
 
@@ -512,7 +517,7 @@ class CF7DBPlugin extends CF7DBPluginLifeCycle {
 //            }
             foreach ($cf7->posted_data as $name => $value) {
                 $nameClean = stripslashes($name);
-                if (in_array($nameClean, $noSaveFields)) {
+                if ($this->fieldMatches($nameClean, $noSaveFields)) {
                     continue; // Don't save in DB
                 }
 
@@ -553,7 +558,9 @@ class CF7DBPlugin extends CF7DBPluginLifeCycle {
             // Update: This seems to have been reversed back to the original in Contact Form 7 3.2 or 3.3
             if ($cf7->uploaded_files && is_array($cf7->uploaded_files)) {
                 foreach ($cf7->uploaded_files as $field => $filePath) {
-                    if (!in_array($field, $foundUploadFiles) && $filePath) {
+                    if (!in_array($field, $foundUploadFiles) &&
+                            $filePath &&
+                            !$this->fieldMatches($field, $noSaveFields)) {
                         $fileName = basename($filePath);
                         $content = file_get_contents($filePath);
                         $didSaveFile = $wpdb->query($wpdb->prepare($parametrizedFileQuery,
@@ -574,22 +581,20 @@ class CF7DBPlugin extends CF7DBPluginLifeCycle {
             if ($this->getOption('SaveCookieData', 'false') == 'true' && is_array($_COOKIE)) {
                 $saveCookies = $this->getSaveCookies();
                 foreach ($_COOKIE as $cookieName => $cookieValue) {
-                    if (!empty($saveCookies) && !in_array($cookieName, $saveCookies)) {
-                        continue;
+                    if ($this->fieldMatches($cookieName, $saveCookies)) {
+                        $wpdb->query($wpdb->prepare($parametrizedQuery,
+                            $time,
+                            $title,
+                            'Cookie ' . $cookieName,
+                            $cookieValue,
+                            $order++));
                     }
-                    $wpdb->query($wpdb->prepare($parametrizedQuery,
-                                                $time,
-                                                $title,
-                                                'Cookie ' . $cookieName,
-                                                $cookieValue,
-                                                $order++));
                 }
             }
 
             // If the submitter is logged in, capture his id
             if ($user) {
                 $order = ($order < 9999) ? 9999 : $order + 1; // large order num to try to make it always next-to-last
-                $current_user = wp_get_current_user(); // WP_User
                 $wpdb->query($wpdb->prepare($parametrizedQuery,
                                             $time,
                                             $title,
@@ -611,6 +616,27 @@ class CF7DBPlugin extends CF7DBPluginLifeCycle {
         catch (Exception $ex) {
             error_log(sprintf('CFDB Error: %s:%s %s  %s', $ex->getFile(), $ex->getLine(), $ex->getMessage(), $ex->getTraceAsString()));
         }
+    }
+
+    /**
+     * @param $fieldName string
+     * @param $patternsArray array
+     * @return boolean true if $fieldName is in $patternsArray or matches any element of it that is a regex
+     */
+    protected function fieldMatches($fieldName, $patternsArray) {
+        if (is_array($patternsArray)) {
+            foreach($patternsArray as $pattern) {
+                if ($fieldName == $pattern) {
+                    return true;
+                }
+                if (strncmp($pattern, '/', 1)  == 0) {
+                    if (@preg_match($pattern , $fieldName)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     /**
@@ -724,6 +750,15 @@ class CF7DBPlugin extends CF7DBPluginLifeCycle {
                          $this->getSortCodeBuilderPageSlug(),
                          array(&$this, 'showShortCodeBuilderPage'));
 
+        if ($this->isEditorActive()) {
+            add_submenu_page($menuSlug,
+                    $displayName . ' Import',
+                __('Import', 'contact-form-7-to-database-extension'),
+                $this->roleToCapability($this->getRoleOption('CanChangeSubmitData')),
+                    get_class($this) . 'Import',
+                array(&$this, 'showShortImportCsvPage'));
+        }
+
         add_submenu_page($menuSlug,
                          $displayName . ' Options',
                          __('Options', 'contact-form-7-to-database-extension'),
@@ -758,6 +793,12 @@ class CF7DBPlugin extends CF7DBPluginLifeCycle {
         $view->display($this);
     }
 
+    public function showShortImportCsvPage() {
+        require_once('CFDBViewImportCsv.php');
+        $view = new CFDBViewImportCsv;
+        $view->display($this);
+    }
+
     /**
      * Display the Admin page for this Plugin that show the form data saved in the database
      * @return void
@@ -789,8 +830,7 @@ class CF7DBPlugin extends CF7DBPluginLifeCycle {
                CF7DBPlugin::$dateFormat = get_option('date_format');
                CF7DBPlugin::$timeFormat = get_option('time_format');
             }
-            // Convert time to local timezone
-            date_default_timezone_set(get_option('timezone_string'));
+            $this->setTimezone();
             CF7DBPlugin::$checkForCustomDateFormat = false;
         }
 
@@ -934,5 +974,86 @@ class CF7DBPlugin extends CF7DBPluginLifeCycle {
         return $url;
     }
 
+    public function setTimezone() {
+        $timezone = $this->getOption('Timezone');
+        if (!$timezone) {
+            $timezone = get_option('timezone_string');
+        }
+        if ($timezone) {
+            date_default_timezone_set($timezone);
+        }
+    }
+
+    /**
+     * @return boolean Is the CFDB Editor extension installed?
+     */
+    public function isEditorInstalled() {
+        return get_option('CFDBEditPlugin__installed', false) == true;
+    }
+
+
+    /**
+     * @return string|null get the CFDB Editor extension version string.
+     * return null if not installed
+     */
+    public function getEditorSavedVersion() {
+        return get_option('CFDBEditPlugin__version', null);
+    }
+
+    /**
+     * @return array of CFDB Editor plugin data, see: http://codex.wordpress.org/Function_Reference/get_plugin_data
+     */
+    public function getEditorPluginData() {
+            $editPluginFile = WP_PLUGIN_DIR .
+                    '/contact-form-to-database-extension-edit/contact-form-to-database-extension-edit.php';
+            if(@file_exists($editPluginFile)) {
+                $pluginData = get_plugin_data($editPluginFile);
+                if (is_array($pluginData)) {
+                    return $pluginData;
+            }
+        }
+        return array();
+    }
+
+    /**
+     * @return bool if CFDB Editor extension plugin is activated
+     */
+    public function isEditorActive() {
+        $editPluginFile = 'contact-form-to-database-extension-edit/contact-form-to-database-extension-edit.php';
+        return function_exists('is_plugin_active') && is_plugin_active($editPluginFile);
+    }
+
+
+    public function addAdminNotices() {
+        if (!$this->isEditorActive()) {
+            return;
+        }
+        $requiredEditorVersion = '1.2';
+        $editorData = $this->getEditorPluginData();
+        if (isset($editorData['Version'])) {
+            if (version_compare($editorData['Version'], $requiredEditorVersion) == -1) {
+                ?>
+                <div id="message" class="error">Plugin <strong>Contact Form to DB Extension Edit</strong> should be updated.
+                    <a target="_cfdbeditupgrade" href="http://cfdbplugin.com/?page_id=939">Get the upgrade</a><br/>
+                    Current version: <?php echo $editorData['Version']; ?>, Needed version: <?php echo $requiredEditorVersion; ?>
+                </div>
+            <?php
+            }
+        }
+    }
+
+    /**
+     * @return array of form names that have data in the DB
+     */
+    public function getForms() {
+        global $wpdb;
+        $forms = array();
+        $tableName = $this->getSubmitsTableName();
+        $formsFromQuery = $wpdb->get_results("select distinct `form_name` from `$tableName` order by `form_name`");
+        foreach ($formsFromQuery as $aRow) {
+            $forms[] = $aRow->form_name;
+        }
+        return $forms;
+    }
 
 }

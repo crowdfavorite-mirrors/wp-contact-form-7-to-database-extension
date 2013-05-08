@@ -179,7 +179,7 @@ class ExportToValue extends ExportBase implements CFDBExport {
                             }
                         }
                     }
-                    $mean = $sum / $count;
+                    $mean = ($count != 0) ? $sum / $count : 'undefined'; // Avoid div by zero error
                     if ($this->isFromShortCode) {
                         return $mean;
                     }
@@ -205,9 +205,15 @@ class ExportToValue extends ExportBase implements CFDBExport {
                         $total = $total * count($this->dataIterator->displayColumns);
                     }
 
-                    $percentNum = 100.0 * $count / $total;
-                    $percentDisplay = round($percentNum) . '%';
-                    //$percentDisplay = "$count / $total = $percentNum as $percentDisplay"; // debug
+                    if ($total != 0) {
+                        $percentNum = 100.0 * $count / $total;
+                        $percentDisplay = round($percentNum) . '%';
+                        //$percentDisplay = "$count / $total = $percentNum as $percentDisplay"; // debug
+                    }
+                    else {
+                        // Avoid div by zero error
+                        $percentDisplay = '0%';
+                    }
 
                     if ($this->isFromShortCode) {
                         return $percentDisplay;
