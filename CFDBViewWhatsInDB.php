@@ -268,6 +268,13 @@ class CFDBViewWhatsInDB extends CFDBView {
             // Show table of form data
             if ($useDataTables) {
                 $i18nUrl = $plugin->getDataTableTranslationUrl();
+
+                // Work out the datatable menu for number or rows shown
+                $maxVisible = $plugin->getOption('MaxVisibleRows', -1);
+                if (!is_numeric($maxVisible)) {
+                    $maxVisible = -1;
+                }
+                $menuJS = $this->createDatatableLengthMenuJavascriptString($maxVisible);
                 ?>
             <script type="text/javascript" language="Javascript">
                 var oTable;
@@ -277,8 +284,8 @@ class CFDBViewWhatsInDB extends CFDBView {
                         "aaSorting": [],
                         "bScrollCollapse": true,
                         "sScrollX":"100%",
-                        "iDisplayLength": -1,
-                        "aLengthMenu": [[25, 50, 100, -1], [25, 50, 100, "<?php _e('All', 'contact-form-7-to-database-extension')?>"]]
+                        "iDisplayLength": <?php echo $maxVisible ?>,
+                        "aLengthMenu": <?php echo $menuJS ?>
                         <?php
                         if ($i18nUrl) {
                             echo ", \"oLanguage\": { \"sUrl\":  \"$i18nUrl\" }";
@@ -289,6 +296,7 @@ class CFDBViewWhatsInDB extends CFDBView {
 
                         ?>
                     });
+                    jQuery('th[id="delete_th"]').unbind('click'); <?php // Don't sort delete column ?>
                 });
 
             </script>
@@ -544,6 +552,46 @@ class CFDBViewWhatsInDB extends CFDBView {
 
     protected function paginateLink($page, $label) {
         return "<a href=\"#\" onclick=\"changeDbPage('$page');\">$label</a>";
+    }
+
+    /**
+     * Create aLengthMenu javascript string for databatable
+     * @param $maxVisible
+     * @return string
+     */
+    protected function createDatatableLengthMenuJavascriptString($maxVisible) {
+        $numRowsMenu = array();
+        $found = $maxVisible == -1;
+        foreach (array(10, 25, 50, 100) as $entry) {
+            if ($found) {
+                $numRowsMenu[] = $entry;
+            } else {
+                if ($maxVisible == $entry) {
+                    $found = true;
+                } else if ($maxVisible < $entry) {
+                    $numRowsMenu[] = $maxVisible;
+                    $found = true;
+                }
+                $numRowsMenu[] = $entry;
+            }
+        }
+        if (!$found) {
+            $numRowsMenu[] = $maxVisible;
+        }
+        $numRowsMenu[] = -1;
+
+        $menuJS1 = '[[';
+        $menuJS2 = ', [';
+        foreach ($numRowsMenu as $val) {
+            $menuJS1 .= $val . ',';
+            if ($val == -1) {
+                $val = '"' . __('All', 'contact-form-7-to-database-extension') . '"';
+            }
+            $menuJS2 .= $val . ',';
+        }
+        $menuJS1 = substr($menuJS1, 0, -1) . ']';
+        $menuJS2 = substr($menuJS2, 0, -1) . ']]';
+        return $menuJS1 . $menuJS2;
     }
 
 }

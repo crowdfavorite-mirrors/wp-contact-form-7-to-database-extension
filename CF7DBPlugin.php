@@ -46,7 +46,7 @@ class CF7DBPlugin extends CF7DBPluginLifeCycle {
     public function getOptionMetaData() {
         return array(
             //'_version' => array('Installed Version'), // For testing upgrades
-//            'Donated' => array(__('I have donated to this plugin', 'contact-form-7-to-database-extension'), 'false', 'true'),
+            'Donated' => array(__('I have donated to this plugin', 'contact-form-7-to-database-extension'), 'false', 'true'),
             'IntegrateWithCF7' => array(__('Capture form submissions from Contact Form 7 Plugin', 'contact-form-7-to-database-extension'), 'true', 'false'),
             'IntegrateWithFSCF' => array(__('Capture form submissions from Fast Secure Contact Form Plugin', 'contact-form-7-to-database-extension'), 'true', 'false'),
             'IntegrateWithJetPackContactForm' => array(__('Capture form submissions from JetPack Contact Form', 'contact-form-7-to-database-extension'), 'true', 'false'),
@@ -60,6 +60,7 @@ class CF7DBPlugin extends CF7DBPluginLifeCycle {
                     ' <a target="_blank" href="http://cfdbplugin.com/?p=918">' . __('(Creates a security hole)', 'contact-form-7-to-database-extension') . '</a>', 'false', 'true'),
             'Timezone' => array(__('Timezone to capture Submit Time. Blank will use WordPress Timezone setting. <a target="_blank" href="http://www.php.net/manual/en/timezones.php">Options</a>', 'contact-form-7-to-database-extension')),
             'MaxRows' => array(__('Maximum number of rows to retrieve from the DB for the Admin display', 'contact-form-7-to-database-extension')),
+            'MaxVisibleRows' => array(__('#Rows (of maximum above) visible in the Admin datatable', 'contact-form-7-to-database-extension')),
             'UseDataTablesJS' => array(__('Use Javascript-enabled tables in Admin Database page', 'contact-form-7-to-database-extension'), 'true', 'false'),
             'ShowLineBreaksInDataTable' => array(__('Show line breaks in submitted data table', 'contact-form-7-to-database-extension'), 'true', 'false'),
             'UseCustomDateTimeFormat' => array(__('Use Custom Date-Time Display Format (below)', 'contact-form-7-to-database-extension'), 'true', 'false'),
@@ -581,7 +582,7 @@ class CF7DBPlugin extends CF7DBPluginLifeCycle {
             if ($this->getOption('SaveCookieData', 'false') == 'true' && is_array($_COOKIE)) {
                 $saveCookies = $this->getSaveCookies();
                 foreach ($_COOKIE as $cookieName => $cookieValue) {
-                    if ($this->fieldMatches($cookieName, $saveCookies)) {
+                    if (empty($saveCookies) || $this->fieldMatches($cookieName, $saveCookies)) {
                         $wpdb->query($wpdb->prepare($parametrizedQuery,
                             $time,
                             $title,
@@ -623,7 +624,7 @@ class CF7DBPlugin extends CF7DBPluginLifeCycle {
      * @param $patternsArray array
      * @return boolean true if $fieldName is in $patternsArray or matches any element of it that is a regex
      */
-    protected function fieldMatches($fieldName, $patternsArray) {
+    public function fieldMatches($fieldName, $patternsArray) {
         if (is_array($patternsArray)) {
             foreach($patternsArray as $pattern) {
                 if ($fieldName == $pattern) {
@@ -975,11 +976,11 @@ class CF7DBPlugin extends CF7DBPluginLifeCycle {
     }
 
     public function setTimezone() {
-        $timezone = $this->getOption('Timezone');
-        if (!$timezone) {
+        $timezone = trim($this->getOption('Timezone'));
+        if (empty($timezone)) {
             $timezone = get_option('timezone_string');
         }
-        if ($timezone) {
+        if (!empty($timezone)) {
             date_default_timezone_set($timezone);
         }
     }
@@ -1028,7 +1029,7 @@ class CF7DBPlugin extends CF7DBPluginLifeCycle {
         if (!$this->isEditorActive()) {
             return;
         }
-        $requiredEditorVersion = '1.2';
+        $requiredEditorVersion = '1.2.2';
         $editorData = $this->getEditorPluginData();
         if (isset($editorData['Version'])) {
             if (version_compare($editorData['Version'], $requiredEditorVersion) == -1) {

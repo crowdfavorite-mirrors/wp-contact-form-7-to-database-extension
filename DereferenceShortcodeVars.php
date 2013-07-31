@@ -29,11 +29,11 @@ class DereferenceShortcodeVars implements CF7DBValueConverter {
         }
         $retValue = $varString; // Default return
 
-        $current_user = wp_get_current_user(); // WP_User
-        if ($current_user != 0) {
+        if (is_user_logged_in()) {
             // user is logged in
+            $current_user = wp_get_current_user(); // WP_User
             $retValue = str_replace('$ID', $current_user->ID, $retValue);
-            $retValue = str_replace('$id', $current_user->id, $retValue); // deprecated
+            $retValue = str_replace('$id', @$current_user->id, $retValue); // deprecated
             $retValue = str_replace('$first_name', $current_user->first_name, $retValue);
             $retValue = str_replace('$last_name', $current_user->last_name, $retValue);
             $retValue = str_replace('$user_login', $current_user->user_login, $retValue);

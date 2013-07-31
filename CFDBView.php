@@ -30,7 +30,7 @@ abstract class CFDBView {
 
     protected function pageHeader(&$plugin) {
         $this->sponsorLink($plugin);
-        $this->headerLinks();
+        $this->headerLinks($plugin);
     }
 
 
@@ -41,16 +41,23 @@ abstract class CFDBView {
     protected function sponsorLink(&$plugin) {
     }
 
-    protected function headerLinks() {
+    /**
+     * @param $plugin CF7DBPlugin
+     * @return void
+     */
+    protected function headerLinks(&$plugin) {
+        $notDonated = 'true' != $plugin->getOption('Donated', 'false');
         ?>
     <table style="width:100%;">
         <tbody>
         <tr>
             <td width="25%" style="font-size:x-small;">
+                <?php
+                if ($notDonated) { ?>
                 <a target="_donate"
                    href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=NEVDJ792HKGFN&lc=US&item_name=Wordpress%20Plugin&item_number=cf7%2dto%2ddb%2dextension&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted">
                     <img src="https://www.paypal.com/en_US/i/btn/btn_donate_SM.gif" alt="Donate">
-                </a>
+                </a> <?php } ?>
             </td>
             <td width="25%" style="font-size:x-small;">
                 <a target="_cf7todb"
