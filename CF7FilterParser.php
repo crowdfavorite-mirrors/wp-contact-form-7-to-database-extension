@@ -119,19 +119,10 @@ class CF7FilterParser implements CF7DBEvalutator {
      * @return array
      */
     public function parseANDs($filterString) {
+        // Deal with various && encoding problems
+        $filterString = html_entity_decode($filterString);
+
         $retVal = preg_split('/&&/', $filterString, -1, PREG_SPLIT_NO_EMPTY);
-        if (count($retVal) == 1) {
-            // This took me a long time chase down. Looks like in some cases when using this in a
-            // WordPress web page, the text that gets here is '&#038;&#038;' rather than '&&'
-            // (But oddly, this is not always the case). So check for this case explicitly.
-            $retVal = preg_split('/&#038;&#038;/', $filterString, -1, PREG_SPLIT_NO_EMPTY);
-
-            // More recently, editor seems to replace with HTML codes
-            if (count($retVal) == 1) {
-                $retVal = preg_split('/&amp;&amp;/', $filterString, -1, PREG_SPLIT_NO_EMPTY);
-            }
-        }
-
         //echo "<pre>Parsed '$filterString' into " . print_r($retVal, true) . '</pre>';
         return $retVal;
     }

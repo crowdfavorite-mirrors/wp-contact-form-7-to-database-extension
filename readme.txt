@@ -5,8 +5,8 @@ Tags: contact form,database,contact form database,save contact form,form databas
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Requires at least: 3.2.1
-Tested up to: 3.5.2
-Stable tag: 2.6.2
+Tested up to: 3.8.1
+Stable tag: 2.7
 
 Saves submitted form data to the database and provides short codes to display it. Captures data from Contact Form 7 and Fast Secure Contact Form
 
@@ -86,6 +86,13 @@ You can always deactivate the plugin without loosing data.
 1. Admin Panel view of submitted form data
 
 == Changelog ==
+
+= 2.7.1 =
+* Integration with wp-parsidate to shows Shamsi(Jalali) dates.
+
+= 2.7 =
+* Integration with Gravity Forms
+* Translation updates
 
 = 2.6.3 =
 * Bug fix: When option was set, Cookies were not being captured with the form submission unless explicitly listed

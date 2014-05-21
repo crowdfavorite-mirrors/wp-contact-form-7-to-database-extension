@@ -50,6 +50,7 @@ class CF7DBPlugin extends CF7DBPluginLifeCycle {
             'IntegrateWithCF7' => array(__('Capture form submissions from Contact Form 7 Plugin', 'contact-form-7-to-database-extension'), 'true', 'false'),
             'IntegrateWithFSCF' => array(__('Capture form submissions from Fast Secure Contact Form Plugin', 'contact-form-7-to-database-extension'), 'true', 'false'),
             'IntegrateWithJetPackContactForm' => array(__('Capture form submissions from JetPack Contact Form', 'contact-form-7-to-database-extension'), 'true', 'false'),
+            'IntegrateWithGravityForms' => array(__('Capture form submissions from Gravity Forms', 'contact-form-7-to-database-extension'), 'true', 'false'),
             'CanSeeSubmitData' => array(__('Can See Submission data', 'contact-form-7-to-database-extension'),
                                         'Administrator', 'Editor', 'Author', 'Contributor', 'Subscriber', 'Anyone'),
             'CanSeeSubmitDataViaShortcode' => array(__('Can See Submission when using shortcodes', 'contact-form-7-to-database-extension'),
@@ -281,6 +282,11 @@ class CF7DBPlugin extends CF7DBPluginLifeCycle {
         // Hook into JetPack Contact Form
         if ($this->getOption('IntegrateWithJetPackContactForm', 'true') == 'true') {
             add_action('grunion_pre_message_sent', array(&$this, 'saveJetPackContactFormData'), 10, 3);
+        }
+
+        // Hook into Gravity Forms
+        if ($this->getOption('IntegrateWithGravityForms', 'true') == 'true') {
+            add_action('gform_after_submission', array(&$this, 'saveGravityFormData'), 10, 2);
         }
 
         // Have our own hook to receive form submissions independent of other plugins
@@ -669,6 +675,116 @@ class CF7DBPlugin extends CF7DBPluginLifeCycle {
     }
 
     /**
+     * http://www.gravityhelp.com/documentation/page/Gform_after_submission
+     * @param $entry Entry Object The entry that was just created.
+     * http://www.gravityhelp.com/documentation/page/Entry_Object
+     * @param $form Form Object The current form
+     * http://www.gravityhelp.com/documentation/page/Form_Object
+     */
+    public function saveGravityFormData($entry, $form) {
+
+        //error_log('Form Definition: ' . print_r($form, true)); // debug
+        //error_log('Entry Definition: ' . print_r($entry, true)); // debug
+
+        $postedData = array();
+        $uploadFiles = array();
+
+        // Iterate through the field definitions and get their values
+        if (! is_array($form['fields'])) {
+            return;
+        }
+        foreach ($form['fields'] as $field) {
+            if (! is_array($field)) {
+                continue;
+            }
+            $fieldName = $field['label'];
+
+            if (!empty($field['inputs']) && is_array($field['inputs'])) {
+                // This is a multi-input field
+
+                if ($field['type'] == 'checkbox') {
+                    $values = array();
+                    foreach ($field['inputs'] as $input) {
+                        $inputId = strval($input['id']); // Need string value of number like '1.3'
+                        if (! empty($entry[$inputId])) {
+                            $values[] = $entry[$inputId];
+                        }
+                    }
+                    $postedData[$fieldName] = implode(',', $values);
+                }
+                else {
+                    foreach ($field['inputs'] as $input) {
+                        $inputId = strval($input['id']); // Need string value of number like '1.3'
+                        $label = $input['label']; // Assumption: all inputs have diff labels
+                        $effectiveFieldName = $fieldName;
+                        if (!empty($label)) {
+                            $effectiveFieldName = $fieldName . ' ' . $label;
+                        }
+                        $postedData[$effectiveFieldName] = $entry[$inputId];
+                    }
+                }
+            }
+            else {
+                $fieldId = $field['id'];
+                switch ($field['type']) {
+                    case 'list' :
+                        // List - value is serialized array
+                        $valueArray = @unserialize($entry[$fieldId]);
+                        if (is_array($valueArray)) {
+                            $postedData[$fieldName] = implode(',',$valueArray);
+                        }
+                        else {
+                            $postedData[$fieldName] = $entry[$fieldId];
+                        }
+                        break;
+
+                    case 'fileupload':
+                        // File Upload - value is file URL
+                        // http://<SITE>/wp-content/uploads/gravity_forms/<PATH>/<FILE>
+                        $url = $entry[$fieldId];
+                        $fileName = basename($url);
+                        $postedData[$fieldName] = $fileName;
+
+                        $filePath = ABSPATH . substr($url, strlen(get_site_url()));
+                        $uploadFiles[$fieldName] = $filePath;
+                        break;
+
+                    default:
+                        $postedData[$fieldName] = $entry[$fieldId];
+                        break;
+                }
+
+            }
+        }
+
+        // Other form metadata
+        $paymentMetaData = array(
+            //'currency',
+            'payment_status', 'payment_date',
+            'transaction_id', 'payment_amount', 'payment_method',
+            'is_fulfilled', 'transaction_type');
+        foreach ($paymentMetaData as $pmt) {
+            $hasPaymentInfo = false;
+            if (! empty($entry[$pmt])) {
+                $postedData[$pmt] = $entry[$pmt];
+                $hasPaymentInfo = true;
+            }
+            if ($hasPaymentInfo && ! empty($entry['currency'])) {
+                // It seems currency is always set but only meaningful
+                // if the other payment info is set.
+                $postedData['currency'] = $entry['currency'];
+            }
+        }
+
+
+        $data = (object)  array(
+            'title' => $form['title'],
+            'posted_data' => $postedData,
+            'uploaded_files' => $uploadFiles);
+        $this->saveFormData($data);
+    }
+
+    /**
      * @param  $time string form submit time
      * @param  $formName string form name
      * @param  $fieldName string field name (should be an upload file field)
@@ -835,22 +951,37 @@ class CF7DBPlugin extends CF7DBPluginLifeCycle {
             CF7DBPlugin::$checkForCustomDateFormat = false;
         }
 
-        // Support Jalali dates but looking for wp-jalali plugin and
-        // using its 'jdate' function
+        // Support Shamsi(Jalali) dates by looking for a plugin that can produce the correct text for the date
         if (!function_exists('is_plugin_active') && @file_exists(ABSPATH . 'wp-admin/includes/plugin.php')) {
             include_once(ABSPATH . 'wp-admin/includes/plugin.php');
         }
-        if (function_exists('is_plugin_active') && is_plugin_active('wp-jalali/wp-jalali.php')) {
-            $jDateFile = WP_PLUGIN_DIR . '/wp-jalali/inc/jalali-core.php';
-            if(@file_exists($jDateFile)) {
-                include_once($jDateFile);
-                if (function_exists('jdate')) {
-                    //return jdate('l, F j, Y');
+        if (function_exists('is_plugin_active')) {
+            // See if wp-parsidate is active and if so, have it convert the date
+            // using its 'parsidate' function
+            if (is_plugin_active('wp-parsidate/wp-parsidate.php')) {
+                if (function_exists('parsidate')) {
                     if (CF7DBPlugin::$customDateFormat) {
-                        return jdate(CF7DBPlugin::$customDateFormat, $time);
+                        return parsidate(CF7DBPlugin::$customDateFormat, $time);
                     }
                     else {
-                        return jdate(CF7DBPlugin::$dateFormat . ' ' . CF7DBPlugin::$timeFormat, $time);
+                        return parsidate(CF7DBPlugin::$dateFormat . ' ' . CF7DBPlugin::$timeFormat, $time);
+                    }
+                }
+            }
+            // See if wp-jalali is active and if so, have it convert the date
+            // using its 'jdate' function
+            else if (is_plugin_active('wp-jalali/wp-jalali.php')) {
+                $jDateFile = WP_PLUGIN_DIR . '/wp-jalali/inc/jalali-core.php';
+                if(@file_exists($jDateFile)) {
+                    include_once($jDateFile);
+                    if (function_exists('jdate')) {
+                        //return jdate('l, F j, Y');
+                        if (CF7DBPlugin::$customDateFormat) {
+                            return jdate(CF7DBPlugin::$customDateFormat, $time);
+                        }
+                        else {
+                            return jdate(CF7DBPlugin::$dateFormat . ' ' . CF7DBPlugin::$timeFormat, $time);
+                        }
                     }
                 }
             }

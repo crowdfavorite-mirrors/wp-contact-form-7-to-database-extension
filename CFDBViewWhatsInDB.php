@@ -282,6 +282,7 @@ class CFDBViewWhatsInDB extends CFDBView {
                     oTable = jQuery('#<?php echo $tableHtmlId ?>').dataTable({ <?php // "sDom": 'Rlfrtip', // ColReorder ?>
                         "bJQueryUI": true,
                         "aaSorting": [],
+                        //"sScrollY": "400",
                         "bScrollCollapse": true,
                         "sScrollX":"100%",
                         "iDisplayLength": <?php echo $maxVisible ?>,
@@ -562,7 +563,7 @@ class CFDBViewWhatsInDB extends CFDBView {
     protected function createDatatableLengthMenuJavascriptString($maxVisible) {
         $numRowsMenu = array();
         $found = $maxVisible == -1;
-        foreach (array(10, 25, 50, 100) as $entry) {
+        foreach (array(1, 2, 3, 4, 5, 10, 25, 50, 100) as $entry) {
             if ($found) {
                 $numRowsMenu[] = $entry;
             } else {
