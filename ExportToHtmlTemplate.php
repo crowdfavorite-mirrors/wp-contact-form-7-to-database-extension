@@ -21,6 +21,7 @@
 
 require_once('ExportBase.php');
 require_once('CFDBExport.php');
+require_once('CFDBShortCodeContentParser.php');
 
 class ExportToHtmlTemplate extends ExportBase implements CFDBExport {
 
@@ -70,6 +71,7 @@ class ExportToHtmlTemplate extends ExportBase implements CFDBExport {
         $submitTimeKeyName = 'Submit_Time_Key';
         $this->setDataIterator($formName, $submitTimeKeyName);
 
+        $options['content'] = $this->modifyContent($options['content']);
 
         $matches = array();
         preg_match_all('/\$\{([^}]+)\}/', $options['content'], $matches);
@@ -79,7 +81,7 @@ class ExportToHtmlTemplate extends ExportBase implements CFDBExport {
         if (!empty($matches) && is_array($matches[1])) {
             foreach ($matches[1] as $aSubVar) {
                 // Each is expected to be a name of a column
-                if (in_array($aSubVar, $this->dataIterator->displayColumns)) {
+                if (in_array($aSubVar, $this->dataIterator->getDisplayColumns())) {
                     $colNamesToSub[] = $aSubVar;
                     $varNamesToSub[] = '${' . $aSubVar . '}';
                 }
@@ -118,16 +120,26 @@ class ExportToHtmlTemplate extends ExportBase implements CFDBExport {
             $options['content'] = str_replace('<br />', '', $options['content']);
         }
 
-        // Evaluation IF-expressions
-        // todo: modify $options['content']
+        // Break out sections: Before, Template, After
+        $before = '';
+        $template = '';
+        $after = '';
+        if (isset($options['content'])) {
+            $contentParser = new CFDBShortCodeContentParser;
+            list($before, $template, $after) = $contentParser->parseBeforeContentAfter($options['content']);
+        }
+
+        if ($before) {
+            // Allow for short codes in "before"
+            echo do_shortcode($before);
+        }
 
         while ($this->dataIterator->nextRow()) {
-            // Evaluation IF-expressions
-            // todo: modify $options['content']
+            // todo: Evaluation IF-expressions
 
             if (empty($colNamesToSub)) {
                 // Process nested short codes
-                echo do_shortcode($options['content']);
+                echo do_shortcode($template);
             }
             else {
                 $fields_with_file = null;
@@ -144,29 +156,42 @@ class ExportToHtmlTemplate extends ExportBase implements CFDBExport {
                                 $replacements[] = $this->plugin->getFileUrl($this->dataIterator->row[$submitTimeKeyName], $formName, $aCol);
                                 break;
                             case 'link':
-                                $replacements[] =
-                                        '<a href="' .
-                                        $this->plugin->getFileUrl($this->dataIterator->row[$submitTimeKeyName], $formName, $aCol) .
-                                        '">' .
-                                        htmlentities($this->dataIterator->row[$aCol], null, 'UTF-8') .
-                                        '</a>';
+                                if (isset($this->dataIterator->row[$aCol])) {
+                                    $replacements[] =
+                                            '<a href="' .
+                                            $this->plugin->getFileUrl($this->dataIterator->row[$submitTimeKeyName], $formName, $aCol) .
+                                            '">' .
+                                            htmlentities($this->dataIterator->row[$aCol], null, 'UTF-8') .
+                                            '</a>';
+                                } else {
+                                    $replacements[] = '';
+                                }
                                 break;
                             case 'image':
                             case 'img':
-                                $replacements[] =
-                                        '<img src="' .
-                                        $this->plugin->getFileUrl($this->dataIterator->row[$submitTimeKeyName], $formName, $aCol) .
-                                        '" alt="' .
-                                        htmlentities($this->dataIterator->row[$aCol], null, 'UTF-8') .
-                                        '" />';
+                                if (isset($this->dataIterator->row[$aCol])) {
+                                    $replacements[] =
+                                            '<img src="' .
+                                            $this->plugin->getFileUrl($this->dataIterator->row[$submitTimeKeyName], $formName, $aCol) .
+                                            '" alt="' .
+                                            htmlentities($this->dataIterator->row[$aCol], null, 'UTF-8') .
+                                            '" />';
+                                } else {
+                                    $replacements[] = '';
+                                }
                                 break;
                             case 'name':
                             default:
-                                $replacements[] = htmlentities($this->dataIterator->row[$aCol], null, 'UTF-8');
+                                if (isset($this->dataIterator->row[$aCol])) {
+                                    $replacements[] = htmlentities($this->dataIterator->row[$aCol], null, 'UTF-8');
+                                }
                         }
-                    }
-                    else {
-                        $replacements[] = htmlentities($this->dataIterator->row[$aCol], null, 'UTF-8');
+                    } else {
+                        if (isset($this->dataIterator->row[$aCol])) {
+                            $replacements[] = htmlentities($this->dataIterator->row[$aCol], null, 'UTF-8');
+                        } else {
+                            $replacements[] = '';
+                        }
                     }
                 }
                 // Preserve line breaks in the field
@@ -174,9 +199,15 @@ class ExportToHtmlTemplate extends ExportBase implements CFDBExport {
                     $replacements[$i] = nl2br($replacements[$i]); // preserve line breaks
                 }
                 // Process nested short codes
-                echo do_shortcode(str_replace($varNamesToSub, $replacements, $options['content']));
+                echo do_shortcode(str_replace($varNamesToSub, $replacements, $template));
             }
         }
+
+        if ($after) {
+            // Allow for short codes in "after"
+            echo do_shortcode($after);
+        }
+
 
         if ($this->isFromShortCode) {
             // If called from a shortcode, need to return the text,
@@ -188,5 +219,13 @@ class ExportToHtmlTemplate extends ExportBase implements CFDBExport {
 
     }
 
+    /**
+     * Intended to be overridden
+     * @param $template string
+     * @return string
+     */
+    public function modifyContent($template) {
+        return $template;
+    }
 
 }

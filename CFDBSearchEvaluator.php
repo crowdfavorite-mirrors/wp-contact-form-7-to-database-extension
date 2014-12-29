@@ -1,6 +1,6 @@
 <?php
 /*
-    "Contact Form to Database" Copyright (C) 2013 Michael Simpson  (email : michael.d.simpson@gmail.com)
+    "Contact Form to Database" Copyright (C) 2011-2012 Michael Simpson  (email : michael.d.simpson@gmail.com)
 
     This file is part of Contact Form to Database.
 
@@ -19,18 +19,15 @@
     If not, see <http://www.gnu.org/licenses/>.
 */
 
-include_once('CF7DBEvalutator.php');
+include_once('CFDBEvaluator.php');
 
-class CFDBClassEvaluator implements CF7DBEvalutator {
+class CFDBSearchEvaluator implements CFDBEvaluator {
 
-    var $className;
-    var $instance;
+    var $search;
 
-    public function setClassName($className) {
-        $this->className = $className;
-        $this->instance = new $className;
+    public function setSearch($search) {
+        $this->search = strtolower($search);
     }
-
 
     /**
      * Evaluate expression against input data. This is intended to mimic the search field on DataTables
@@ -38,12 +35,16 @@ class CFDBClassEvaluator implements CF7DBEvalutator {
      * @return boolean result of evaluating $data against expression
      */
     public function evaluate(&$data) {
-        if ($this->instance) {
-            return call_user_func_array(
-                array($this->instance, "filter"),
-                array(&$data));
+        if (!$this->search) {
+            return true;
         }
-        return true;
+        foreach ($data as $key => $value) {
+            // Any field can match, case insensitive
+            if (false !== strrpos(strtolower($value), $this->search)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

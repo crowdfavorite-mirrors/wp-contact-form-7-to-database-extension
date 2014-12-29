@@ -24,35 +24,30 @@ require_once('ShortCodeLoader.php');
 class CFDBShortcodeExportUrl extends ShortCodeLoader {
 
     /**
-     * @param  $atts array of short code attributes
-     * @return string JSON. See ExportToJson.php
+     * @param $atts array of short code attributes
+     * @param $content string not used
+     * @return string export link
      */
-    public function handleShortcode($atts) {
+    public function handleShortcode($atts, $content = null) {
+        $atts = $this->decodeAttributes($atts);
         $params = array();
         $params[] = admin_url('admin-ajax.php');
         $params[] = '?action=cfdb-export';
-        if (isset($atts['form'])) {
-            $params[] = '&form=' . urlencode($atts['form']);
-        }
-        if (isset($atts['show'])) {
-            $params[] = '&show=' . urlencode($atts['show']);
-        }
-        if (isset($atts['hide'])) {
-            $params[] = '&hide=' . urlencode($atts['hide']);
-        }
-        if (isset($atts['limit'])) {
-            $params[] = '&limit=' . urlencode($atts['limit']);
-        }
-        if (isset($atts['search'])) {
-            $params[] = '&search=' . urlencode($atts['search']);
-        }
-        if (isset($atts['filter'])) {
-            $params[] = '&filter=' . urlencode($atts['filter']);
-        }
-        if (isset($atts['enc'])) {
-            $params[] = '&enc=' . urlencode($atts['enc']);
-        }
 
+        $special = array('urlonly', 'linktext', 'role');
+        foreach ($atts as $key => $value) {
+            if (!in_array($key, $special)) {
+                $params[] = sprintf('&%s=%s', urlencode($key), urlencode($value));
+            } else if ($key == 'role') {
+                require_once('CF7DBPlugin.php');
+                $plugin = new CF7DBPlugin();
+                $isAuth = $plugin->isUserRoleEqualOrBetterThan($value);
+                if (!$isAuth) {
+                    // Not authorized. Print no link.
+                    return '';
+                }
+            }
+        }
         $url = implode($params);
 
         if (isset($atts['urlonly']) && $atts['urlonly'] == 'true') {

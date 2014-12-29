@@ -5,20 +5,22 @@ Tags: contact form,database,contact form database,save contact form,form databas
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Requires at least: 3.2.1
-Tested up to: 3.8.1
-Stable tag: 2.7
+Tested up to: 4.1
+Stable tag: 2.8.22
 
-Saves submitted form data to the database and provides short codes to display it. Captures data from Contact Form 7 and Fast Secure Contact Form
+Saves submitted form data to the database. Export the data to a file or use short codes to display it.
 
 == Description ==
 
-This "CFDB" plugin saves contact form submissions to your WordPress database and provides short codes to retrieve and display the data.
+The "CFDB" plugin saves contact form submissions to your WordPress database and provides and administration page and short codes to view and display the data.
+Video tutorial on the <a href="http://cfdbplugin.com/">CFDB Plugin Site</a>
 
 By simply installing the plugin, it will automatically begin to capture submissions from:
 
 * JetPack Contact Form plugin
 * Contact Form 7 (CF7) plugin
 * Fast Secure Contact Form (FSCF) plugin
+* Gravity Forms plugin
 
 Other form submissions can be saved with the addition of the <a href="http://cfdbplugin.com/?page_id=508">[cfdb-save-form-post]</a> short code on the target submission page.
 
@@ -30,7 +32,7 @@ Looking at your data in the WP Admin Area
 This plugin provides three administration pages in the administration area under the "Contact form DB" submenu.
 
 * "Contact form DB" to view and export form submission data
-* "Database Short Code" page to generate short codes and export
+* "Database Short Code" page to generate short codes and exports
 * "Database Options" to change configuration parameters
 
 Displaying Saved Data in Posts and Pages
@@ -38,19 +40,15 @@ Displaying Saved Data in Posts and Pages
 Use short codes such as [cfdb-html], [cfdb-table], [cfdb-datatable], [cfdb-value] and [cfdb-json] to display the data on a non-admin page on your site.
 Use the short code builder page to set short code options.
 
-Disclaimer: I am not the maker of JetPack, Contact Form 7 nor Fast Secure Contact Form and am not associated with the development of those plugins.
-
 == Installation ==
 
 1. Your WordPress site must be running PHP5 or better. This plugin will fail to activate if your site is running PHP4.
-1. Be sure that any of Contact Form 7, Fast Secure Contact Form and/or JetPack is installed and activated (this is an extension to them)
-1. Fast Secure Contact Form should be at least version 2.9.7
-
-Notes:
-
-* Tested using PHP 5.2.13, MySQL 5.0 (Using 1and1 for hosting)
+1. Be sure that any of Contact Form 7, Fast Secure Contact Form, JetPack, and/or Gravity Forms is installed and activated
 
 == Frequently Asked Questions ==
+
+= Is there a tutorial? =
+See the <a href="https://www.youtube.com/watch?v=mcbIKJK6EJ0">Video Tutorial</a>
 
 = I installed the plugin but I don't see any of my forms listed in the administration page =
 Nothing will show until you have actual form submissions captured by this plugin. The plugin is not aware of your form definitions, it is only aware of form submissions.
@@ -61,9 +59,7 @@ Refer the <a href="http://cfdbplugin.com/">Plugin Site</a>
 
 = Where do I see the data? =
 
-* Contact Form 7 Users: In the admin page, under CF7's top level "Contact" admin menu. Look for "Contact" -> "Database"
-* Fast Secure Contact Form Users: In the admin page, Plugins -> FS Contact Form Option, There is a "Database" link at the top of the page
-* For a direct link, use http://&lt;your-wordpress-site&gt;/wp-admin/admin.php?page=CF7DBPluginSubmissions
+* In the admin page, "Contact Form DB"
 
 = Can I display form data on a non-admin web page or in a post? =
 
@@ -73,19 +69,122 @@ Yes, <a href="http://cfdbplugin.com/?page_id=89">documentation on shortcodes</a>
 
 `wp_cf7dbplugin_submits`
 Note: if you changed your WordPress MySql table prefix from the default `wp_` to something else, then this table will also have that prefix instead of `wp_` (`$wpdb->prefix`)
-Note: previous to version 2.0, the table was named "wp_CF7DBPlugin_SUBMITS" but was changed to all-lowercase as part of the 2.0 upgrade.
 
 = If I uninstall the plugin, what happens to its data in the database? =
 
 By default it remains in your database in its own table. There is an option to have the plugin delete all its data if you uninstall it that you can set if you like.
 You can always deactivate the plugin without loosing data.
 
-
 == Screenshots ==
 
 1. Admin Panel view of submitted form data
 
 == Changelog ==
+
+= 2.8.23 =
+* Bug fix for Gravity Form integration. Sometimes field value was not captured where there are multiple fields of the same name but only one shown based on conditional field definition.
+
+= 2.8.22 =
+* Changed icon in admin panel
+* Dutch translation update
+
+= 2.8.21 =
+* Added icons to admin panel
+
+= 2.8.20 =
+* Additional XSS protection for admin panels
+
+= 2.8.19 =
+* Swedish translation update
+
+= 2.8.18 =
+* Better XSS protection for admin panels
+
+= 2.8.17 =
+* Bug fix in [cfdb-html] variable substitution when data for column is not present.
+
+= 2.8.16 =
+* Generating the [submit_time] tag for Contact Form 7 is now an option in the Options page and is off by default to avoid the post being flagged as spam
+* Added some protection against cross site scripting
+
+= 2.8.15 =
+* Bug Fix: No longer generating 'submit_url' for Contact Form 7 email because it seems to cause CF7 to think it is a spam submission and it drops it.
+* Bug fix: when form name has commas in it, retrieving its data from the DB did not work because plugin was treating it as a list of form names
+
+= 2.8.14 =
+* Fix to capturing Gravity Forms list values
+
+= 2.8.13 =
+* Bug fix in "trans"
+
+= 2.8.12 =
+* Work-around for WP bug https://core.trac.wordpress.org/ticket/29658
+
+= 2.8.11 =
+* Bug fix related to Excel Internet Query export
+* Bug fix when HTML special characters in short code attributes
+
+= 2.8.10 =
+* Bug fix related to "trans" with multiple transform functions
+
+= 2.8.9 =
+* Added delete button in admin screen viewing single submission
+* Can now include in CF7 emails the CFDB [submit_time] and [submit_url]
+* Fixes to handling line breaks in [cfdb-json]
+
+= 2.8.8 =
+* PHP fix: work-around for bug in PHP 5.3.0 - 5.3.8 https://bugs.php.net/bug.php?id=43200
+
+= 2.8.7 =
+* Bug fix: [cfdb-export-link] was not processing all short code options
+
+= 2.8.6 =
+* Bug fix: on some system submit_time timestamp lost precision due to being represented in scientific notation. This can cause more than one submission being seen as the same.
+
+= 2.8.5 =
+* Fix to error message introduced in 2.8.4
+
+= 2.8.4 =
+* New short code [cfdb-save-form-maker-post] can be used to capture data from Form Maker plugin.
+* Bug fix: (recently introduced in 2.8) Fixed handling of filter expressions with $_POST(field) where field is blank
+* Bug fix: Fix for rarely experienced bug where plugin is confused about needing to upgrade itself
+
+= 2.8.3 =
+* IMPORTANT: Addition fix to work properly with Contact Form 7 version 3.9
+
+= 2.8.2 =
+* IMPORTANT: Contact Form 7 users will need to update to this version when they update to Contact Form 7 version 3.9 otherwise data will no longer be saved in the database!
+* Bug fix: cases where blank version saved to DB was causing the plugin to keep trying to upgrade
+* Bug fix: data with blank column name was causing query to fail and data not to be displayed
+
+= 2.8.1 =
+* Bug fix: transform re-assigning the value of a column was creating a duplicate column
+
+= 2.8 =
+* Can put functions in short code filters. <a target="_cfdb_doc" href="http://cfdbplugin.com/?page_id=1073">See documentation</a>
+* Can transform data coming into short codes by assigning functions or classes in the new "trans" short code attribute. <a target="_cfdb_doc" href="http://cfdbplugin.com/?page_id=1076">See documentation</a>
+* All short code options can be set to $_POST(value), $_GET(value), $_COOKIE(value)
+* Most short codes now allows for an optional "before" and "after" section
+* Admin page view now has links on each row to bring up a window with just that entry's data. Easier to read and print (and edit if Editor extension is installed)
+* Support for MySqli which should fix some character encoding issues
+* Returning null from cfdb_form_data filter now stops the form from saving
+* Bug fix: hook to save form data was not returning "true" an causing subsequent hooks for other plugins to not be called.
+
+= 2.7.5 =
+* Simpler Google Live Data implementation
+* [cfdb-json] now supports "header" and "headers" options. Short code builder page now generates JSON export link.
+
+= 2.7.4 =
+* Fix: short code builder page for Google Live Data typo: was giving the spreadsheet function as "cfdbddata" instead of "cfdbdata"
+
+= 2.7.3 =
+* Fix for mysql_real_escape_string error
+
+= 2.7.2 =
+* Google Spreadsheet Live Data now fixed. But users need to regenerate Google script code
+* Google Spreadsheet Live Data function now supports all standard short code options (filter, show, hide, etc.)
+* Short Code Builder page now can build function call to be used in Google Spreadsheet
+* [cfdb-export-link], CSV exports and Excel export Links now support "headers" options
 
 = 2.7.1 =
 * Integration with wp-parsidate to shows Shamsi(Jalali) dates.

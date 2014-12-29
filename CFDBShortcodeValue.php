@@ -24,16 +24,20 @@ require_once('ShortCodeLoader.php');
 class CFDBShortcodeValue extends ShortCodeLoader {
 
     /**
-     * @param  $atts array of short code attributes
+     * @param $atts array of short code attributes
+     * @param $content string short code inner content
      * @return string value submitted to a form field as selected by $atts. See ExportToValue.php
      */
-    public function handleShortcode($atts) {
+    public function handleShortcode($atts, $content = null) {
         if (isset($atts['form'])) {
+            $atts = $this->decodeAttributes($atts);
+            $atts['content'] = $content;
             $atts['fromshortcode'] = true;
             require_once('ExportToValue.php');
             $export = new ExportToValue();
             return $export->export($atts['form'], $atts);
         }
+        return '';
     }
 
 }

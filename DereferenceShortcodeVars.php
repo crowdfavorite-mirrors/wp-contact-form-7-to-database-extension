@@ -19,9 +19,9 @@
     If not, see <http://www.gnu.org/licenses/>.
 */
 
-require_once('CF7DBValueConverter.php');
+require_once('CFDBValueConverter.php');
 
-class DereferenceShortcodeVars implements CF7DBValueConverter {
+class DereferenceShortcodeVars implements CFDBValueConverter {
 
     public function convert($varString) {
         if ($varString == null) {
@@ -33,7 +33,7 @@ class DereferenceShortcodeVars implements CF7DBValueConverter {
             // user is logged in
             $current_user = wp_get_current_user(); // WP_User
             $retValue = str_replace('$ID', $current_user->ID, $retValue);
-            $retValue = str_replace('$id', @$current_user->id, $retValue); // deprecated
+            //$retValue = str_replace('$id', @$current_user->id, $retValue); // deprecated
             $retValue = str_replace('$first_name', $current_user->first_name, $retValue);
             $retValue = str_replace('$last_name', $current_user->last_name, $retValue);
             $retValue = str_replace('$user_login', $current_user->user_login, $retValue);

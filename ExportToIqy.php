@@ -27,7 +27,7 @@ class ExportToIqy implements CFDBExport {
         header('Content-Type: text/x-ms-iqy');
         header("Content-Disposition: attachment; filename=\"$formName.iqy\"");
 
-        $url = get_bloginfo('url');
+        $url = get_bloginfo('wpurl');
         $encFormName = urlencode($formName);
         $uri = "?action=cfdb-export&form=$encFormName&enc=HTMLBOM";
         if (is_array($options)) {

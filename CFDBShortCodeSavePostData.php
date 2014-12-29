@@ -26,16 +26,21 @@ class CFDBShortCodeSavePostData extends ShortCodeLoader {
     const FORM_TITLE_FIELD = 'form_title';
 
     /**
-     * @param  $atts array of short code attributes
+     * @param $atts array of short code attributes
+     * @param $content string not used
      * @return void
      */
-    public function handleShortcode($atts) {
+    public function handleShortcode($atts, $content = null) {
 
-//        echo '<pre>';
-//        print_r($_POST);
-//        echo "\n";
-//        print_r($_FILES);
-//        echo '</pre>';
+        $atts = $this->decodeAttributes($atts);
+
+        if (is_array($atts) && isset($atts['debug']) && $atts['debug'] == 'true') {
+            echo '<pre>';
+            print_r($_POST);
+            echo "\n";
+            print_r($_FILES);
+            echo '</pre>';
+        }
 
         if (is_array($_POST) && !empty($_POST)) {
             $title = isset($_POST[self::FORM_TITLE_FIELD]) ? $_POST[self::FORM_TITLE_FIELD] : 'Untitled';

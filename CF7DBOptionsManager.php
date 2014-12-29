@@ -323,7 +323,8 @@ class CF7DBOptionsManager {
             </tr>
             </tbody></table>
 
-            <h2><?php echo $this->getPluginDisplayName(); echo ' '; _e('Settings', 'contact-form-7-to-database-extension'); ?></h2>
+            <h2><img src="<?php echo $this->getPluginFileUrl('img/icon-50x50.png') ?>" alt=""/>
+                <?php _e('Settings', 'contact-form-7-to-database-extension'); ?></h2>
 
             <form method="post" action="">
             <?php settings_fields($settingsGroup); ?>
