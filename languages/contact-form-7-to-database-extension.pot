@@ -1,19 +1,19 @@
-# Copyright (C) 2014 
+# Copyright (C) 2015 
 # This file is distributed under the same license as the  package.
 msgid ""
 msgstr ""
 "Project-Id-Version:  \n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/contact-form-7-to-database-"
 "extension\n"
-"POT-Creation-Date: 2014-12-24 16:47:06+00:00\n"
+"POT-Creation-Date: 2015-01-21 02:23:15+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2014-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2015-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 
-#: CF7DBOptionsManager.php:281 CF7DBPlugin.php:423
+#: CF7DBOptionsManager.php:281 CF7DBPlugin.php:442
 #: ExportToGoogleLiveData.php:31
 msgid "You do not have sufficient permissions to access this page."
 msgstr ""
@@ -54,196 +54,192 @@ msgstr ""
 msgid "Save Changes"
 msgstr ""
 
-#: CF7DBOptionsManager.php:411 CF7DBPlugin.php:88
+#: CF7DBOptionsManager.php:411 CF7DBPlugin.php:93
 #: CFDBViewShortCodeBuilder.php:1211 CFDBViewShortCodeBuilder.php:1450
 #: CFDBViewShortCodeBuilder.php:1459 CFDBViewShortCodeBuilder.php:1505
 msgid "true"
 msgstr ""
 
-#: CF7DBOptionsManager.php:412 CF7DBPlugin.php:90
+#: CF7DBOptionsManager.php:412 CF7DBPlugin.php:95
 #: CFDBViewShortCodeBuilder.php:1212 CFDBViewShortCodeBuilder.php:1449
 #: CFDBViewShortCodeBuilder.php:1458 CFDBViewShortCodeBuilder.php:1506
 msgid "false"
 msgstr ""
 
-#: CF7DBPlugin.php:52
+#: CF7DBPlugin.php:54
 msgid "Capture form submissions from Contact Form 7 Plugin"
 msgstr ""
 
-#: CF7DBPlugin.php:53
+#: CF7DBPlugin.php:55
 msgid "Capture form submissions from Fast Secure Contact Form Plugin"
 msgstr ""
 
-#: CF7DBPlugin.php:54
+#: CF7DBPlugin.php:56
 msgid "Capture form submissions from JetPack Contact Form"
 msgstr ""
 
-#: CF7DBPlugin.php:55
+#: CF7DBPlugin.php:57
 msgid "Capture form submissions from Gravity Forms"
 msgstr ""
 
-#: CF7DBPlugin.php:56
+#: CF7DBPlugin.php:58
+msgid "Capture form submissions from WR ContactForm"
+msgstr ""
+
+#: CF7DBPlugin.php:59
 msgid "Can See Submission data"
 msgstr ""
 
-#: CF7DBPlugin.php:58
-msgid "Can See Submission when using shortcodes"
-msgstr ""
-
-#: CF7DBPlugin.php:60
-msgid "Can Edit/Delete Submission data"
+#: CF7DBPlugin.php:61
+msgid "Allow only Administrators to see CFDB administration screens"
 msgstr ""
 
 #: CF7DBPlugin.php:62
+msgid "Can See Submission when using shortcodes"
+msgstr ""
+
+#: CF7DBPlugin.php:64
+msgid "Can Edit/Delete Submission data"
+msgstr ""
+
+#: CF7DBPlugin.php:66
 msgid "Generate [submit_time] tag for Contact Form 7 email"
 msgstr ""
 
-#: CF7DBPlugin.php:63
+#: CF7DBPlugin.php:67
 msgid "Allow Any Function in Short Codes"
 msgstr ""
 
-#: CF7DBPlugin.php:64 CF7DBPlugin.php:66
+#: CF7DBPlugin.php:68 CF7DBPlugin.php:70
 msgid "(Creates a security hole)"
 msgstr ""
 
-#: CF7DBPlugin.php:65
+#: CF7DBPlugin.php:69
 msgid "Allow RSS URLs"
 msgstr ""
 
-#: CF7DBPlugin.php:67
+#: CF7DBPlugin.php:71
 msgid ""
 "Timezone to capture Submit Time. Blank will use WordPress Timezone setting. "
 "<a target=\"_blank\" href=\"http://www.php.net/manual/en/timezones.php"
 "\">Options</a>"
 msgstr ""
 
-#: CF7DBPlugin.php:68
+#: CF7DBPlugin.php:72
 msgid "Maximum number of rows to retrieve from the DB for the Admin display"
 msgstr ""
 
-#: CF7DBPlugin.php:69
+#: CF7DBPlugin.php:73
 msgid "#Rows (of maximum above) visible in the Admin datatable"
 msgstr ""
 
-#: CF7DBPlugin.php:70
+#: CF7DBPlugin.php:74
 msgid "Use Javascript-enabled tables in Admin Database page"
 msgstr ""
 
-#: CF7DBPlugin.php:71
+#: CF7DBPlugin.php:75
 msgid "Show line breaks in submitted data table"
 msgstr ""
 
-#: CF7DBPlugin.php:72
+#: CF7DBPlugin.php:76
 msgid "Use Custom Date-Time Display Format (below)"
 msgstr ""
 
-#: CF7DBPlugin.php:73
+#: CF7DBPlugin.php:77
 msgid "Date-Time Display Format"
 msgstr ""
 
-#: CF7DBPlugin.php:74
+#: CF7DBPlugin.php:78
 msgid "Export URLs instead of file names for uploaded files"
 msgstr ""
 
-#: CF7DBPlugin.php:75
+#: CF7DBPlugin.php:79
 msgid "Do not save <u>fields</u> in DB named (comma-separated list, no spaces)"
 msgstr ""
 
-#: CF7DBPlugin.php:76
+#: CF7DBPlugin.php:80
 msgid "Do not save <u>forms</u> in DB named (comma-separated list, no spaces)"
 msgstr ""
 
-#: CF7DBPlugin.php:77
+#: CF7DBPlugin.php:81
 msgid "Save Cookie Data with Form Submissions"
 msgstr ""
 
-#: CF7DBPlugin.php:78
+#: CF7DBPlugin.php:82
 msgid ""
 "Save only cookies in DB named (comma-separated list, no spaces, and above "
 "option must be set to true)"
 msgstr ""
 
-#: CF7DBPlugin.php:79
+#: CF7DBPlugin.php:83
 msgid "Show the query used to display results"
 msgstr ""
 
-#: CF7DBPlugin.php:80
+#: CF7DBPlugin.php:84
+msgid "Error output file (full path) or email address"
+msgstr ""
+
+#: CF7DBPlugin.php:85
 msgid "Drop this plugin's Database table on uninstall"
 msgstr ""
 
-#: CF7DBPlugin.php:93 CFDBViewShortCodeBuilder.php:1198
+#: CF7DBPlugin.php:98 CFDBViewShortCodeBuilder.php:1198
 msgid "Administrator"
 msgstr ""
 
-#: CF7DBPlugin.php:95 CFDBViewShortCodeBuilder.php:1199
+#: CF7DBPlugin.php:100 CFDBViewShortCodeBuilder.php:1199
 msgid "Editor"
 msgstr ""
 
-#: CF7DBPlugin.php:97 CFDBViewShortCodeBuilder.php:1200
+#: CF7DBPlugin.php:102 CFDBViewShortCodeBuilder.php:1200
 msgid "Author"
 msgstr ""
 
-#: CF7DBPlugin.php:99 CFDBViewShortCodeBuilder.php:1201
+#: CF7DBPlugin.php:104 CFDBViewShortCodeBuilder.php:1201
 msgid "Contributor"
 msgstr ""
 
-#: CF7DBPlugin.php:101 CFDBViewShortCodeBuilder.php:1202
+#: CF7DBPlugin.php:106 CFDBViewShortCodeBuilder.php:1202
 msgid "Subscriber"
 msgstr ""
 
-#: CF7DBPlugin.php:103 CFDBViewShortCodeBuilder.php:1203
+#: CF7DBPlugin.php:108 CFDBViewShortCodeBuilder.php:1203
 msgid "Anyone"
 msgstr ""
 
-#: CF7DBPlugin.php:429
+#: CF7DBPlugin.php:448
 msgid "Missing form parameters"
 msgstr ""
 
-#: CF7DBPlugin.php:433
+#: CF7DBPlugin.php:452
 msgid "No such file."
 msgstr ""
 
-#: CF7DBPlugin.php:490
+#: CF7DBPlugin.php:509
 msgid "Invalid: "
 msgstr ""
 
-#: CF7DBPlugin.php:493
+#: CF7DBPlugin.php:512
 msgid "Valid: "
 msgstr ""
 
-#: CF7DBPlugin.php:527
-msgid "Database"
-msgstr ""
-
-#: CF7DBPlugin.php:529
-msgid "Database Options"
-msgstr ""
-
-#: CF7DBPlugin.php:531
-msgid "Build Short Code"
-msgstr ""
-
-#: CF7DBPlugin.php:533
-msgid "Reference"
-msgstr ""
-
-#: CF7DBPlugin.php:976
+#: CF7DBPlugin.php:787
 msgid "Contact Form DB"
 msgstr ""
 
-#: CF7DBPlugin.php:1025 CFDBViewShortCodeBuilder.php:1159
+#: CF7DBPlugin.php:836 CFDBViewShortCodeBuilder.php:1159
 msgid "Short Code"
 msgstr ""
 
-#: CF7DBPlugin.php:1033 CFDBViewImportCsv.php:71
+#: CF7DBPlugin.php:844 CFDBViewImportCsv.php:71
 msgid "Import"
 msgstr ""
 
-#: CF7DBPlugin.php:1041
+#: CF7DBPlugin.php:852
 msgid "Options"
 msgstr ""
 
-#: CF7DBPlugin.php:1100 ExportToHtmlTable.php:221
+#: CF7DBPlugin.php:911 ExportToHtmlTable.php:221
 msgid "Delete"
 msgstr ""
 
@@ -251,21 +247,37 @@ msgstr ""
 msgid "Missing Zend Framework"
 msgstr ""
 
+#: CFDBIntegrationFSCF.php:52
+msgid "Database"
+msgstr ""
+
+#: CFDBIntegrationFSCF.php:54
+msgid "Database Options"
+msgstr ""
+
+#: CFDBIntegrationFSCF.php:56
+msgid "Build Short Code"
+msgstr ""
+
+#: CFDBIntegrationFSCF.php:58
+msgid "Reference"
+msgstr ""
+
 #: CFDBShortcodeExportUrl.php:57 CFDBViewImportCsv.php:114
 #: CFDBViewWhatsInDB.php:229
 msgid "Export"
 msgstr ""
 
-#: CFDBView.php:66
+#: CFDBView.php:69
 msgid "Rate this Plugin"
 msgstr ""
 
-#: CFDBView.php:72 CFDBViewShortCodeBuilder.php:130
+#: CFDBView.php:75 CFDBViewShortCodeBuilder.php:130
 #: CFDBViewShortCodeBuilder.php:1172
 msgid "Documentation"
 msgstr ""
 
-#: CFDBView.php:78
+#: CFDBView.php:81
 msgid "Support"
 msgstr ""
 

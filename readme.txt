@@ -6,7 +6,7 @@ License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Requires at least: 3.2.1
 Tested up to: 4.1
-Stable tag: 2.8.23
+Stable tag: 2.8.24
 
 Saves submitted form data to the database. Export the data to a file or use short codes to display it.
 
@@ -80,6 +80,12 @@ You can always deactivate the plugin without loosing data.
 1. Admin Panel view of submitted form data
 
 == Changelog ==
+
+= 2.8.25 =
+* Now captures data from WR ContactForm (BETA)
+* New option to allow only Administrators to see CFDB administration screens
+* New option to send CFDB errors to a file to email
+* Bug fix to avoid rare instances of duplicate submit_time
 
 = 2.8.24 =
 * Bug fix related to displaying form names in administration panel with certain characters
