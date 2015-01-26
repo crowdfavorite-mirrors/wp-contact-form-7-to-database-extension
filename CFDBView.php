@@ -34,7 +34,10 @@ abstract class CFDBView {
     }
 
     function getRequestParam($name) {
-        return strip_tags(isset($_REQUEST[$name]) ? $_REQUEST[$name] : '');
+        $value = isset($_REQUEST[$name]) ? $_REQUEST[$name] : '';
+        // Prevent javascript injection
+        $value = str_ireplace('<script', '', $value);
+        return $value;
     }
 
     /**
