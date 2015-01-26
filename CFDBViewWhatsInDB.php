@@ -111,7 +111,7 @@ class CFDBViewWhatsInDB extends CFDBView {
                         <?php foreach ($formsList as $formName) {
                             $selected = ($formName == $currSelection) ? "selected" : "";
                         ?>
-                        <option value="<?php echo $formName ?>" <?php echo $selected ?>><?php echo htmlentities($formName) ?></option>
+                        <option value="<?php echo $formName ?>" <?php echo $selected ?>><?php echo htmlspecialchars($formName) ?></option>
                         <?php } ?>
                     </select>
                 </form>
