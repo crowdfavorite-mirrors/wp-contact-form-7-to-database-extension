@@ -66,7 +66,8 @@ class ExportToHtmlTable extends ExportBase implements CFDBExport {
                     $printStyles = $options['printStyles'];
                 }
                 if (isset($options['edit'])) {
-                    $editMode = 'true' == $options['edit'];
+                    $this->dereferenceOption('edit');
+                    $editMode = 'true' == $this->options['edit'];
                 }
             }
 
