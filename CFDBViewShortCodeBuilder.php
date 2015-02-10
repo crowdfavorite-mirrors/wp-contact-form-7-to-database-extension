@@ -1258,7 +1258,7 @@ class CFDBViewShortCodeBuilder extends CFDBView {
                 <option value="!=">!=</option>
                 <option value=">">></option>
                 <option value="<"><</option>
-                <option value="<="><=</option>
+                <option value=">=">>=</option>
                 <option value="<="><=</option>
                 <option value="===">===</option>
                 <option value="!==">!==</option>
@@ -1569,7 +1569,7 @@ class CFDBViewShortCodeBuilder extends CFDBView {
                 <option value="!=">!=</option>
                 <option value=">">></option>
                 <option value="<"><</option>
-                <option value="<="><=</option>
+                <option value=">=">>=</option>
                 <option value="<="><=</option>
                 <option value="===">===</option>
                 <option value="!==">!==</option>
