@@ -1,18 +1,18 @@
-# Copyright (C) 2012 
+# Copyright (C) 2014
 # This file is distributed under the same license as the  package.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/contact-form-7-to-database-extension\n"
-"POT-Creation-Date: 2012-06-16 19:34:01+00:00\n"
+"POT-Creation-Date: 2015-01-20 19:34:01+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2012-07-13 20:02+0800\n"
-"Last-Translator: GT <u88257@gmail.com>\n"
-"Language-Team: http://gtacg.co.cc <u88257@gmail.com>\n"
-"X-Poedit-Language: Chinese\n"
-"X-Poedit-Country: TAIWAN\n"
+"PO-Revision-Date: 2015-03-27 17:02+0800\n"
+"Last-Translator: 李明軒 <eggeggxuan@gmail.com>\n"
+"Language-Team: \n"
+"Language: zh_TW\n"
+"X-Generator: Poedit 1.5.7\n"
 
 #: CF7DBOptionsManager.php:278
 #: CF7DBPlugin.php:334
@@ -20,9 +20,17 @@ msgstr ""
 msgid "You do not have sufficient permissions to access this page."
 msgstr "你沒有足夠的權限訪問此頁面。"
 
+#: file name Contact Form DB
+msgid "Contact Form DB"
+msgstr "Contact Form DB"
+
+#: file name Contact Form DB
+msgid "Options"
+msgstr "選項"
+
 #: CF7DBOptionsManager.php:296
 msgid "System Settings"
-msgstr "系統設定"
+msgstr "系統參數"
 
 #: CF7DBOptionsManager.php:298
 msgid "System"
@@ -30,11 +38,11 @@ msgstr "系統"
 
 #: CF7DBOptionsManager.php:299
 msgid "PHP Version"
-msgstr "PHP版本"
+msgstr "PHP 版本"
 
 #: CF7DBOptionsManager.php:304
 msgid "(WARNING: This plugin may not work properly with versions earlier than PHP 5.2)"
-msgstr "(警告: 此插件在PHP5.2 5 之前的版本下運行 可能會無法運作)"
+msgstr "( 警告：此插件在PHP 5.2 5 之前的版本下運行，可能會無法運作 )"
 
 #: CF7DBOptionsManager.php:310
 msgid "MySQL Version"
@@ -42,7 +50,7 @@ msgstr "MySQL 版本"
 
 #: CF7DBOptionsManager.php:315
 msgid "(WARNING: This plugin may not work properly with versions earlier than MySQL 5.0)"
-msgstr "(警告: 此插件在MySQL 5.0之前的版本下運行 可能會無法運作)"
+msgstr "( 警告：此插件在 MySQL 5.0 之前的版本下運行，可能會無法運作 )"
 
 #: CF7DBOptionsManager.php:323
 msgid "Settings"
@@ -50,7 +58,7 @@ msgstr "設定"
 
 #: CF7DBOptionsManager.php:348
 msgid "Save Changes"
-msgstr "存檔"
+msgstr "保存"
 
 #: CF7DBOptionsManager.php:407
 #: CF7DBPlugin.php:78
@@ -70,19 +78,19 @@ msgstr "否"
 
 #: CF7DBPlugin.php:49
 msgid "I have donated to this plugin"
-msgstr "我有贊助此插件"
+msgstr "我要贊助這個外掛"
 
 #: CF7DBPlugin.php:50
 msgid "Capture form submissions from Contact Form 7 Plugin"
-msgstr "從 Contact Form 7 Plugin 擷取資料"
+msgstr "從 Contact Form 7 Plugin 獲取資料"
 
 #: CF7DBPlugin.php:51
 msgid "Capture form submissions from Fast Secure Contact Form Plugin"
-msgstr "從 Fast Secure Contact Form Plugin 擷取資料"
+msgstr "從 Fast Secure Contact Form Plugin 獲取資料"
 
 #: CF7DBPlugin.php:52
 msgid "Capture form submissions from JetPack Contact Form"
-msgstr "從 JetPack Contact Form 擷取資料"
+msgstr "從 JetPack Contact Form 獲取資料"
 
 #: CF7DBPlugin.php:53
 msgid "Can See Submission data"
@@ -90,7 +98,7 @@ msgstr "可以閱讀資料"
 
 #: CF7DBPlugin.php:55
 msgid "Can See Submission when using shortcodes"
-msgstr "使用shortcodes閱讀資料"
+msgstr "使用 shortcodes 閱讀資料"
 
 #: CF7DBPlugin.php:57
 msgid "Can Edit/Delete Submission data"
@@ -98,19 +106,19 @@ msgstr "可以編輯資料"
 
 #: CF7DBPlugin.php:59
 msgid "Maximum number of rows to retrieve from the DB for the Admin display"
-msgstr "管理員從資料庫最擷取大欄位數量"
+msgstr "管理員讀取數據的最大行數"
 
 #: CF7DBPlugin.php:60
 msgid "Use Javascript-enabled tables in Admin Database page"
-msgstr "在管理員介面 使用Javascript 頁面 "
+msgstr "在管理員界面使用 Javascript 頁面 "
 
 #: CF7DBPlugin.php:61
 msgid "Show line breaks in submitted data table"
-msgstr "在送出的數據表顯示換行"
+msgstr "在數據中顯示換行"
 
 #: CF7DBPlugin.php:62
 msgid "Use Custom Date-Time Display Format (below)"
-msgstr "使用自訂時間格式"
+msgstr "使用自定義時間格式"
 
 #: CF7DBPlugin.php:63
 msgid "Date-Time Display Format"
@@ -118,31 +126,31 @@ msgstr "時間顯示格式"
 
 #: CF7DBPlugin.php:64
 msgid "Export URLs instead of file names for uploaded files"
-msgstr "匯出上傳文件的URL，而不是文件名"
+msgstr "導出上傳文件的 URL，而不是文件名"
 
 #: CF7DBPlugin.php:65
 msgid "Do not save <u>fields</u> in DB named (comma-separated list, no spaces)"
-msgstr "不儲存 <u>fields</u> 在資料庫的名稱 (逗號分隔清單 沒有空格)"
+msgstr "不儲存 <u>欄位</u> 在資料庫的名稱 ( 逗號分隔清單，沒有空格 )"
 
 #: CF7DBPlugin.php:66
 msgid "Do not save <u>forms</u> in DB named (comma-separated list, no spaces)"
-msgstr "不儲存<u>forms</u> 在資料庫的名稱 (逗號分隔清單 沒有空格)"
+msgstr "不儲存 <u>表單</u> 在資料庫的名稱 ( 逗號分隔清單，沒有空格 )"
 
 #: CF7DBPlugin.php:67
 msgid "Save Cookie Data with Form Submissions"
-msgstr "儲存Cookie資料跟表單資料"
+msgstr "儲存 Cookie 資料跟表單資料"
 
 #: CF7DBPlugin.php:68
 msgid "Save only cookies in DB named (comma-separated list, no spaces, and above option must be set to true)"
-msgstr "只儲存資料庫名稱內的ookies (逗號分隔清單 沒有空格 以上選項必須設為是)"
+msgstr "只儲存資料庫名稱內的 cookies ( 逗號分隔清單，沒有空格，以上選項必須設為是 )"
 
 #: CF7DBPlugin.php:69
 msgid "Show the query used to display results"
-msgstr "顯示用來顯示結果的query"
+msgstr "顯示查詢語句"
 
 #: CF7DBPlugin.php:70
 msgid "Drop this plugin's Database table on uninstall"
-msgstr "移除本插件時 同時移除資料庫資料"
+msgstr "刪除本插件時 同時刪除資料庫中資料"
 
 #: CF7DBPlugin.php:83
 msgid "Administrator"
@@ -150,19 +158,19 @@ msgstr "管理員"
 
 #: CF7DBPlugin.php:85
 msgid "Editor"
-msgstr "編輯員"
+msgstr "編輯"
 
 #: CF7DBPlugin.php:87
 msgid "Author"
-msgstr "撰寫員"
+msgstr "作者"
 
 #: CF7DBPlugin.php:89
 msgid "Contributor"
-msgstr "贊助人"
+msgstr "贊助者"
 
 #: CF7DBPlugin.php:91
 msgid "Subscriber"
-msgstr "訂閱人"
+msgstr "訂閱者"
 
 #: CF7DBPlugin.php:93
 msgid "Anyone"
@@ -174,15 +182,15 @@ msgstr "缺失表單參數"
 
 #: CF7DBPlugin.php:344
 msgid "No such file."
-msgstr "無此檔案"
+msgstr "無此數據。"
 
 #: CF7DBPlugin.php:402
 msgid "Invalid: "
-msgstr "不正確"
+msgstr "不正確："
 
 #: CF7DBPlugin.php:405
 msgid "Valid: "
-msgstr "不正確"
+msgstr "正確："
 
 #: CF7DBPlugin.php:421
 #: CF7DBPlugin.php:441
@@ -196,7 +204,7 @@ msgstr "資料庫"
 
 #: CF7DBPlugin.php:443
 msgid "Build Short Code"
-msgstr "製作Short Code"
+msgstr "制作 Short Code"
 
 #: CF7DBPlugin.php:445
 msgid "FAQ"
@@ -208,34 +216,34 @@ msgstr "資料庫  Short Code"
 
 #: CF7DBPluginExporter.php:33
 msgid "Error: No \"form\" parameter submitted"
-msgstr "錯誤: 沒有 \"表單\" 參數被送出"
+msgstr "錯誤：沒有 \"表單\" 參數被送出"
 
 #: CFDBCheckZendFramework.php:72
 msgid "Missing Zend Framework"
-msgstr "沒有 Zend Framework"
+msgstr "没有 Zend Framework"
 
 #: CFDBShortcodeExportUrl.php:62
 #: CFDBViewWhatsInDB.php:216
 msgid "Export"
-msgstr "匯出"
+msgstr "導出"
 
 #: CFDBView.php:58
 msgid "Rate this Plugin"
-msgstr "評分此插件"
+msgstr "對插件評分"
 
 #: CFDBView.php:64
 #: CFDBViewShortCodeBuilder.php:64
 #: CFDBViewShortCodeBuilder.php:669
 msgid "Documentation"
-msgstr "技術資料"
+msgstr "技術文檔"
 
 #: CFDBView.php:70
 msgid "Support"
-msgstr "幫助"
+msgstr "支持"
 
 #: CFDBViewShortCodeBuilder.php:152
 msgid "Error: \""
-msgstr "錯誤: \""
+msgstr "錯誤： \""
 
 #: CFDBViewShortCodeBuilder.php:154
 msgid "\" should not contain double-quotes (\")"
@@ -243,35 +251,35 @@ msgstr "\" 不應該包含雙引號 (\")"
 
 #: CFDBViewShortCodeBuilder.php:202
 msgid "Error: no form is chosen"
-msgstr "錯誤: 沒有選擇聯絡單"
+msgstr "錯誤: 沒有選擇表單"
 
 #: CFDBViewShortCodeBuilder.php:231
 msgid "Warning: \"search\" field ignored because \"filter\" is used (use one but not both)"
-msgstr "警告: \"搜尋\" 欄位被忽略因為 \"過濾器\" 被開啟 (請擇一使用)"
+msgstr "警告：\"搜尋\" 欄位被忽略因為 \"過濾器\" 被開啟 ( 請擇一使用 )"
 
 #: CFDBViewShortCodeBuilder.php:244
 msgid "Error: \"limit\": if you provide a value for \"Start Row\" then you must also provide a value for \"Num Rows\""
-msgstr "錯誤: \"限制\": 如果有提供資料給 \"Start Row\" 那你必須也提供資料給 \"Num Rows\""
+msgstr "錯誤 ：\"限制\": 如果有提供資料給 \"Start Row\" 那你必須也提供資料給 \"Num Rows\""
 
 #: CFDBViewShortCodeBuilder.php:248
 msgid "Error: \"limit\": \"Num Rows\" must be a positive integer"
-msgstr "錯誤: \"限制\": \"Num Rows\" 必須為正整數"
+msgstr "錯誤：\"限制\": \"Num Rows\" 必須為正整數"
 
 #: CFDBViewShortCodeBuilder.php:255
 msgid "Error: \"limit\": \"Start Row\" must be a positive integer"
-msgstr "錯誤: \"限制\": \"開始行\" 必須為正整數"
+msgstr "錯誤：\"限制\": \"開始行\" 必須為正整數"
 
 #: CFDBViewShortCodeBuilder.php:304
 msgid "Error: [cfdb-html] has empty Template. It will not output anything. "
-msgstr "錯誤: [cfdb-html] 有空缺模板. 不會輸出任何東西"
+msgstr "錯誤：[cfdb-html] 有空缺模板，不會輸出任何東西。"
 
 #: CFDBViewShortCodeBuilder.php:382
 msgid "(Test Short Code Results)"
-msgstr "(測試Short Code 結果)"
+msgstr "( 測試 Short Code 結果 )"
 
 #: CFDBViewShortCodeBuilder.php:596
 msgid "Export and Short Code Builder"
-msgstr "匯出 &  Short Code 製作"
+msgstr "導出 &  Short Code 制作"
 
 #: CFDBViewShortCodeBuilder.php:599
 msgid "form"
@@ -288,45 +296,45 @@ msgstr "重設"
 
 #: CFDBViewShortCodeBuilder.php:620
 msgid "Export File"
-msgstr "匯出檔案"
+msgstr "導出檔案"
 
 #: CFDBViewShortCodeBuilder.php:624
 #: CFDBViewShortCodeBuilder.php:920
 #: CFDBViewWhatsInDB.php:194
 msgid "Excel CSV (UTF8-BOM)"
-msgstr " Excel CSV (UTF8-BOM)"
+msgstr " Excel CSV (UTF8-BOM)格式"
 
 #: CFDBViewShortCodeBuilder.php:627
 #: CFDBViewShortCodeBuilder.php:923
 #: CFDBViewWhatsInDB.php:197
 msgid "Excel TSV (UTF16LE-BOM)"
-msgstr "Excel TSV (UTF16LE-BOM)"
+msgstr "Excel TSV (UTF16LE-BOM)格式"
 
 #: CFDBViewShortCodeBuilder.php:630
 #: CFDBViewShortCodeBuilder.php:926
 #: CFDBViewWhatsInDB.php:200
 msgid "Plain CSV (UTF-8)"
-msgstr "Plain CSV (UTF-8)"
+msgstr "Plain CSV (UTF-8)格式"
 
 #: CFDBViewShortCodeBuilder.php:633
 #: CFDBViewShortCodeBuilder.php:929
 #: CFDBViewWhatsInDB.php:191
 msgid "Excel Internet Query"
-msgstr "Excel Internet Query"
+msgstr "Excel Internet Query 格式"
 
 #: CFDBViewShortCodeBuilder.php:637
 #: CFDBViewShortCodeBuilder.php:785
 msgid "Include Header Row"
-msgstr "包含第一欄"
+msgstr "包含第一行"
 
 #: CFDBViewShortCodeBuilder.php:640
 msgid "Generated Export Link:"
-msgstr "製作輸出連結"
+msgstr "制作輸出鏈接"
 
 #: CFDBViewShortCodeBuilder.php:646
 #: CFDBViewShortCodeBuilder.php:681
 msgid "(Did you know: you can create your own short code)"
-msgstr "(你知道嗎?: 你可以製作自己的 short code)"
+msgstr "( 你知道嗎？ 你可以制作自己的 short code )"
 
 #: CFDBViewShortCodeBuilder.php:656
 msgid "Short Code"
@@ -338,11 +346,11 @@ msgstr "* 選擇 short code *"
 
 #: CFDBViewShortCodeBuilder.php:675
 msgid "Generated Short Code:"
-msgstr "製作完成的 Short Code:"
+msgstr "制作完成的 Short Code："
 
 #: CFDBViewShortCodeBuilder.php:689
 msgid "Which fields/columns do you want to display?"
-msgstr "想要顯示哪仙攔?"
+msgstr "想要顯示哪些欄位？"
 
 #: CFDBViewShortCodeBuilder.php:692
 msgid "show"
@@ -352,7 +360,7 @@ msgstr "顯示"
 #: CFDBViewShortCodeBuilder.php:704
 #: CFDBViewShortCodeBuilder.php:771
 msgid "comma-delimited list of field"
-msgstr "逗號分隔 位置清單"
+msgstr "逗號分隔 所有屬性"
 
 #: CFDBViewShortCodeBuilder.php:700
 msgid "hide"
@@ -360,7 +368,7 @@ msgstr "隱藏"
 
 #: CFDBViewShortCodeBuilder.php:709
 msgid "Which rows/submissions do you want to display?"
-msgstr "哪先欄或資料您想要顯示"
+msgstr "您想要顯示哪些欄位或資料"
 
 #: CFDBViewShortCodeBuilder.php:712
 msgid "search"
@@ -380,7 +388,7 @@ msgstr "數值"
 
 #: CFDBViewShortCodeBuilder.php:741
 msgid "Validate submit_time"
-msgstr "驗證送出時間"
+msgstr "驗證 提交時間"
 
 #: CFDBViewShortCodeBuilder.php:742
 msgid "Formats"
@@ -396,7 +404,7 @@ msgstr "限制"
 
 #: CFDBViewShortCodeBuilder.php:755
 msgid "Num Rows"
-msgstr "Num Rows"
+msgstr "行號"
 
 #: CFDBViewShortCodeBuilder.php:755
 #: CFDBViewShortCodeBuilder.php:756
@@ -406,7 +414,7 @@ msgstr "數值"
 
 #: CFDBViewShortCodeBuilder.php:756
 msgid "Start Row (0)"
-msgstr "開始的行 (0)"
+msgstr "起始行 ( 0 )"
 
 #: CFDBViewShortCodeBuilder.php:760
 msgid "random"
@@ -418,19 +426,19 @@ msgstr "順序"
 
 #: CFDBViewShortCodeBuilder.php:770
 msgid "field"
-msgstr "域"
+msgstr "欄位 / 屬性"
 
 #: CFDBViewShortCodeBuilder.php:774
 msgid "ASC"
-msgstr "ASC"
+msgstr "升序"
 
 #: CFDBViewShortCodeBuilder.php:775
 msgid "DESC"
-msgstr "DESC"
+msgstr "降序"
 
 #: CFDBViewShortCodeBuilder.php:781
 msgid "HTML Table Formatting"
-msgstr "HTML Table Formatting"
+msgstr "HTML Table 格式"
 
 #: CFDBViewShortCodeBuilder.php:790
 msgid "id"
@@ -458,7 +466,7 @@ msgstr "HTML style"
 
 #: CFDBViewShortCodeBuilder.php:812
 msgid "[cfdb-datatable] Options"
-msgstr "[cfdb-datatable] 設定"
+msgstr "[cfdb-datatable] 選項"
 
 #: CFDBViewShortCodeBuilder.php:814
 msgid "dt_options"
@@ -478,7 +486,7 @@ msgstr "var"
 
 #: CFDBViewShortCodeBuilder.php:827
 msgid "JS var name"
-msgstr "JS var name"
+msgstr "JS 變數名稱"
 
 #: CFDBViewShortCodeBuilder.php:831
 msgid "format"
@@ -506,15 +514,15 @@ msgstr "function"
 
 #: CFDBViewShortCodeBuilder.php:852
 msgid "min"
-msgstr "min"
+msgstr "最小"
 
 #: CFDBViewShortCodeBuilder.php:853
 msgid "max"
-msgstr "max"
+msgstr "最大"
 
 #: CFDBViewShortCodeBuilder.php:854
 msgid "sum"
-msgstr "sum"
+msgstr "求和"
 
 #: CFDBViewShortCodeBuilder.php:855
 msgid "mean"
@@ -522,7 +530,7 @@ msgstr "mean"
 
 #: CFDBViewShortCodeBuilder.php:856
 msgid "percent"
-msgstr "percent"
+msgstr "%"
 
 #: CFDBViewShortCodeBuilder.php:861
 msgid "delimiter"
@@ -542,11 +550,11 @@ msgstr "url"
 
 #: CFDBViewShortCodeBuilder.php:878
 msgid "name"
-msgstr "name"
+msgstr "名字"
 
 #: CFDBViewShortCodeBuilder.php:879
 msgid "link"
-msgstr "link"
+msgstr "連接"
 
 #: CFDBViewShortCodeBuilder.php:880
 msgid "img"
@@ -586,19 +594,19 @@ msgstr "資料庫裡沒有資料"
 
 #: CFDBViewWhatsInDB.php:142
 msgid "Google Login for Upload"
-msgstr "Google上傳 登入"
+msgstr "Google 上傳 登錄"
 
 #: CFDBViewWhatsInDB.php:151
 msgid "Cannot perform operation because jQuery is not loaded in this page"
-msgstr "無法執行要求  jQuery 無法再載入至本頁"
+msgstr "無法執行要求  jQuery 加載失敗"
 
 #: CFDBViewWhatsInDB.php:203
 msgid "Google Spreadsheet"
-msgstr "Google 試算表 "
+msgstr "Google Spreadsheet 格式"
 
 #: CFDBViewWhatsInDB.php:206
 msgid "Google Spreadsheet Live Data"
-msgstr "Google 試算表 線上數據"
+msgstr "Google Spreadsheet Live Data 格式"
 
 #: CFDBViewWhatsInDB.php:209
 msgid "HTML"
@@ -610,15 +618,15 @@ msgstr "JSON"
 
 #: CFDBViewWhatsInDB.php:219
 msgid "Advanced Export"
-msgstr "進階匯出"
+msgstr "進階導出"
 
 #: CFDBViewWhatsInDB.php:229
 msgid "Delete All This Form's Records"
-msgstr "刪除此聯絡單所有紀錄"
+msgstr "刪除此表單所有記錄"
 
 #: CFDBViewWhatsInDB.php:236
 msgid "Remove _wpcf7 columns"
-msgstr "移除 _wpcf7 欄位"
+msgstr "移除系統參數列 ( _wpcf7 )"
 
 #: CFDBViewWhatsInDB.php:247
 msgid "Edit Data Mode"
@@ -626,23 +634,23 @@ msgstr "編輯模式"
 
 #: CFDBViewWhatsInDB.php:333
 msgid "Did you know: This plugin captures data from both these plugins:"
-msgstr "你知道嗎?: 本插件擷取以下插件的資料"
+msgstr "你知道嗎？ 本插件從以下插件中獲取數據："
 
 #: CFDBViewWhatsInDB.php:342
 msgid "Did you know: You can add this data to your posts and pages using these shortcodes:"
-msgstr "你知道嗎?: 你可以再分頁.文章內使用以下shortcodes"
+msgstr "你知道嗎？ 你可以在文章和頁面中使用以下 shortcodes："
 
 #: CFDBViewWhatsInDB.php:356
 msgid "Would you like to help translate this plugin into your language?"
-msgstr "你可以幫忙翻譯此插件嗎?"
+msgstr "你可以幫忙翻譯此插件嗎？"
 
 #: CFDBViewWhatsInDB.php:358
 msgid "How to create a translation"
-msgstr "如何製作翻譯"
+msgstr "如何制作翻譯"
 
 #: CFDBViewWhatsInDB.php:369
 msgid "Query:"
-msgstr "查詢"
+msgstr "查詢："
 
 #: CFDBViewWhatsInDB.php:391
 msgid "Cancel"
@@ -662,7 +670,7 @@ msgstr "刪除欄"
 
 #: CFDBViewWhatsInDB.php:418
 msgid "next »"
-msgstr "下一個"
+msgstr "下一個 »"
 
 #: CFDBViewWhatsInDB.php:419
 msgid "« prev"
@@ -670,7 +678,7 @@ msgstr "« 上一個"
 
 #: CFDBViewWhatsInDB.php:436
 msgid "Returned entries %s to %s of %s entries in the database"
-msgstr "Returned entries %s to %s of %s entries in the database"
+msgstr "顯示第 %s 到 %s 項記錄 ， 共有 %s 條記錄"
 
 #: ExportBase.php:182
 msgid "You do not have sufficient permissions to access this data."
@@ -678,15 +686,15 @@ msgstr "你沒有足夠的權限訪問此頁面。"
 
 #: ExportToGoogleLiveData.php:170
 msgid "How to Set up Google Spreadsheet to pull data from WordPress"
-msgstr "如何使用Google 試算表 擷取 WORDPRESS 資料"
+msgstr "如何使用 Google Sheets 獲取 WORDPRESS 資料"
 
 #: ExportToGoogleSS.php:62
 msgid "Login Failed"
-msgstr "登入失敗"
+msgstr "登錄失敗"
 
 #: ExportToGoogleSS.php:101
 msgid "New Google Spreadsheet"
-msgstr "新的 Google 試算表"
+msgstr "新的 Google Sheets"
 
 #: ExportToGoogleSS.php:110
 msgid "Error"
@@ -698,13 +706,13 @@ msgstr "刪除"
 
 #: contact-form-7-db.php:23
 msgid "Error: plugin \"Contact Form to DB Extension\" requires a newer version of PHP to be running."
-msgstr "錯誤 本插件需要 較新的PHP版本才能執行"
+msgstr "錯誤：本插件需要較新的 PHP 版本才能執行。"
 
 #: contact-form-7-db.php:24
 msgid "Minimal version of PHP required: "
-msgstr "PHP版本最低要求求: "
+msgstr "PHP 版本最低要求："
 
 #: contact-form-7-db.php:25
 msgid "Your server's PHP version: "
-msgstr "伺服器PHP版本"
+msgstr "伺服器 PHP 版本："
 

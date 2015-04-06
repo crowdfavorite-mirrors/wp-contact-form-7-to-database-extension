@@ -56,6 +56,9 @@ class CF7DBPlugin extends CF7DBPluginLifeCycle implements CFDBDateFormatter {
             'IntegrateWithJetPackContactForm' => array(__('Capture form submissions from JetPack Contact Form', 'contact-form-7-to-database-extension'), 'true', 'false'),
             'IntegrateWithGravityForms' => array(__('Capture form submissions from Gravity Forms', 'contact-form-7-to-database-extension'), 'true', 'false'),
             'IntegrateWithWrContactForms' => array(__('Capture form submissions from WR ContactForm', 'contact-form-7-to-database-extension'), 'true', 'false'),
+            'IntegrateWithQuform' => array(__('Capture form submissions from Quform', 'contact-form-7-to-database-extension'), 'true', 'false'),
+            'IntegrateWithNinjaForms' => array(__('Capture form submissions from Ninja Forms', 'contact-form-7-to-database-extension'), 'true', 'false'),
+            'IntegrateWithEnfoldThemForms' => array(__('Capture form submissions from Enfold Theme', 'contact-form-7-to-database-extension'), 'true', 'false'),
             'CanSeeSubmitData' => array(__('Can See Submission data', 'contact-form-7-to-database-extension'),
                                         'Administrator', 'Editor', 'Author', 'Contributor', 'Subscriber', 'Anyone'),
             'HideAdminPanelFromNonAdmins' => array(__('Allow only Administrators to see CFDB administration screens', 'contact-form-7-to-database-extension'), 'false', 'true'),
@@ -71,6 +74,7 @@ class CF7DBPlugin extends CF7DBPluginLifeCycle implements CFDBDateFormatter {
             'Timezone' => array(__('Timezone to capture Submit Time. Blank will use WordPress Timezone setting. <a target="_blank" href="http://www.php.net/manual/en/timezones.php">Options</a>', 'contact-form-7-to-database-extension')),
             'MaxRows' => array(__('Maximum number of rows to retrieve from the DB for the Admin display', 'contact-form-7-to-database-extension')),
             'MaxVisibleRows' => array(__('#Rows (of maximum above) visible in the Admin datatable', 'contact-form-7-to-database-extension')),
+            'HorizontalScroll' => array(__('Use fixed width in Admin datatable', 'contact-form-7-to-database-extension'), 'true', 'false'),
             'UseDataTablesJS' => array(__('Use Javascript-enabled tables in Admin Database page', 'contact-form-7-to-database-extension'), 'true', 'false'),
             'ShowLineBreaksInDataTable' => array(__('Show line breaks in submitted data table', 'contact-form-7-to-database-extension'), 'true', 'false'),
             'UseCustomDateTimeFormat' => array(__('Use Custom Date-Time Display Format (below)', 'contact-form-7-to-database-extension'), 'true', 'false'),
@@ -324,6 +328,27 @@ class CF7DBPlugin extends CF7DBPluginLifeCycle implements CFDBDateFormatter {
             require_once('CFDBIntegrationWRContactForm.php');
             $integration = new CFDBIntegrationWRContactForm($this);
             $integration->registerHooks();
+        }
+
+        // Hook to work with Quform
+        if ($this->getOption('IntegrateWithQuform', 'true') == 'true') {
+            require_once('CFDBIntegrationQuform.php');
+            $integration = new CFDBIntegrationQuform($this);
+            $integration->registerHooks();
+        }
+
+        // Hook to work with Ninja Forms
+        if ($this->getOption('IntegrateWithNinjaForms', 'true') == 'true') {
+            require_once('CFDBIntegrationNinjaForms.php');
+            $integration = new CFDBIntegrationNinjaForms($this);
+            $integration->registerHooks();
+        }
+
+        // Enfold theme forms
+        if ($this->getOption('IntegrateWithEnfoldThemForms', 'true') == 'true') {
+            require_once('CFDBIntegrationEnfoldTheme.php');
+            $enfold = new CFDBIntegrationEnfoldTheme($this);
+            $enfold->registerHooks();
         }
 
         // Have our own hook to receive form submissions independent of other plugins
@@ -919,6 +944,7 @@ class CF7DBPlugin extends CF7DBPluginLifeCycle implements CFDBDateFormatter {
             <form action="<?php echo get_admin_url() . 'admin.php?page=' . $this->getDBPageSlug() . "&form_name=$form" ?>" method="post">
                 <input name="form_name" type="hidden" value="<?php echo $form ?>"/>
                 <input name="<?php echo $submitTime ?>" type="hidden" value="row"/>
+                <?php wp_nonce_field('delete-from-' . htmlspecialchars($_REQUEST['form_name'])); ?>
                 <button id="delete" name="delete" onclick="this.form.submit();"><?php _e('Delete', 'contact-form-7-to-database-extension')?></button>
             </form>
             <?php

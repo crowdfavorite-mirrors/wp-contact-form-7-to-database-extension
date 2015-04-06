@@ -285,6 +285,8 @@ class CFDBViewWhatsInDB extends CFDBView {
                     $maxVisible = -1;
                 }
                 $menuJS = $this->createDatatableLengthMenuJavascriptString($maxVisible);
+
+                $sScrollX = $plugin->getOption('HorizontalScroll', 'true') == 'true' ? '"100%"' : '""';
                 ?>
             <script type="text/javascript" language="Javascript">
                 var oTable;
@@ -294,7 +296,7 @@ class CFDBViewWhatsInDB extends CFDBView {
                         "aaSorting": [],
                         //"sScrollY": "400",
                         "bScrollCollapse": true,
-                        "sScrollX":"100%",
+                        "sScrollX": <?php echo $sScrollX ?>,
                         "iDisplayLength": <?php echo $maxVisible ?>,
                         "aLengthMenu": <?php echo $menuJS ?>
                         <?php
@@ -343,7 +345,7 @@ class CFDBViewWhatsInDB extends CFDBView {
                 if ($useDataTables) {
                     $options['id'] = $tableHtmlId;
                     $options['class'] = '';
-                    $options['style'] = "#$tableHtmlId td > div { max-height: 100px;  min-width:75px; overflow: auto; font-size: small; }"; // don't let cells get too tall
+                    $options['style'] = "#$tableHtmlId {padding:0;} #$tableHtmlId td > div { max-height: 100px;  min-width:75px; overflow: auto; font-size: small;}"; // don't let cells get too tall
                 }
                 $exporter->export($currSelection, $options);
                 ?>

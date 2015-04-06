@@ -6,7 +6,7 @@ License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Requires at least: 3.2.1
 Tested up to: 4.1
-Stable tag: 2.8.31
+Stable tag: 2.8.35
 
 Saves submitted form data to the database. Export the data to a file or use short codes to display it.
 
@@ -15,20 +15,21 @@ Saves submitted form data to the database. Export the data to a file or use shor
 The "CFDB" plugin saves contact form submissions to your WordPress database and provides and administration page and short codes to view and display the data.
 Video tutorial on the <a href="http://cfdbplugin.com/">CFDB Plugin Site</a>
 
-By simply installing the plugin, it will automatically begin to capture submissions from:
+By simply installing the plugin, it will automatically begin to capture form submissions from:
 
 * JetPack Contact Form plugin
 * Contact Form 7 (CF7) plugin
 * Fast Secure Contact Form (FSCF) plugin
 * Gravity Forms plugin
-* WR ContactForm plugin (BETA)
+* WR ContactForm plugin
+* Quform plugin (BETA)
+* Ninja Forms plugin (BETA)
+* Enfold theme forms
 
 Other form submissions can be saved with the addition of the <a href="http://cfdbplugin.com/?page_id=508">[cfdb-save-form-post]</a> short code on the target submission page.
 
 Contact form plugins are great but generally one thing...the ability to save and retrieve the form data to/from the database.
 If you get a lot of form submissions, then you end up sorting through a lot of email.
-
-Looking at your data in the WP Admin Area
 
 This plugin provides three administration pages in the administration area under the "Contact form DB" submenu.
 
@@ -81,6 +82,22 @@ You can always deactivate the plugin without loosing data.
 1. Admin Panel view of submitted form data
 
 == Changelog ==
+
+= 2.8.36 =
+* Now captures form submission from Quform plugin
+* Now captures form submission from Ninja Forms plugin
+
+= 2.8.35 =
+* Reduced cell padding in admin table
+* Fixed typo in new option
+
+= 2.8.34 =
+* Now captures Enfold Theme forms
+* New on Options page: "Use fixed with in Admin datatable"
+* Taiwanese language update
+
+= 2.8.33 =
+* Fixed Delete button on Admin entry detail page
 
 = 2.8.32 =
 * Security patch

@@ -302,7 +302,7 @@ class CFDBViewShortCodeBuilder extends CFDBView {
         }
 
         function chopLastChar(text) {
-            return text.substr(0, text.length - 1);
+            return text ? text.substr(0, text.length - 1) : text;
         }
 
         function createShortCodeAndExportLink() {

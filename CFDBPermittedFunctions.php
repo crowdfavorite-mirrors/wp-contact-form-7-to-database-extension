@@ -94,6 +94,8 @@ class CFDBPermittedFunctions {
             'boolval',
             'floatval',
             'strval',
+            'bcmul',
+            'bcdiv',
 
         // CFDB-defined functions
             'concat'
